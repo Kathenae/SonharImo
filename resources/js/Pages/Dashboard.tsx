@@ -1,10 +1,10 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import Layout from '@/Layouts/Layout';
 import { Head } from '@inertiajs/react';
 import { PageProps } from '@/types';
 
 export default function Dashboard({ auth }: PageProps) {
     return (
-        <AuthenticatedLayout
+        <Layout
             user={auth.user}
             header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard</h2>}
         >
@@ -17,6 +17,6 @@ export default function Dashboard({ auth }: PageProps) {
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </Layout>
     );
 }
