@@ -5,6 +5,10 @@ import HouseCard from '@/Components/HouseCard';
 import { cn } from '@/utils';
 import { useBreakpoint } from '@/hooks/useMediaQuery';
 
+import coupleMobileJpg from '../../../public/assets/Couple-mobile.jpg';
+import coupleTabletJpg from '../../../public/assets/Couple-tablet.jpg';
+import coupleDesktopJpg from '../../../public/assets/Couple.jpg';
+
 export default function HomePage({ auth, popularListings }: PageProps<{ popularListings: HouseListing[] }>) {
 
     const { isAboveMd } = useBreakpoint('md')
@@ -15,7 +19,10 @@ export default function HomePage({ auth, popularListings }: PageProps<{ popularL
         <Layout user={auth.user}>
             <Head title="Home" />
 
-            <section className={cn('lg:block relative mt-20 lg:mt-0 h-[100vh] lg:aspect-video w-full bg-cover bg-no-repeat offset bg-[url("/assets/couple-mobile.jpg")]', isAboveMd ? 'md:bg-[url("/assets/couple-tablet.jpg")]' : isAboveLg ? 'lg:bg-[url("/assets/couple.jpg")]' : '')}>
+            <section
+                className={cn('lg:block relative mt-20 lg:mt-0 h-[100vh] lg:aspect-video w-full bg-cover bg-no-repeat offset')}
+                style={{ backgroundImage: `url(${isAboveMd ? coupleTabletJpg : isAboveLg ? coupleDesktopJpg : coupleMobileJpg})` }}
+            >
                 <div className='absolute left-0 top-0 w-full h-full bg-gradient-to-t from-30% lg:bg-gradient-to-r lg:from-5% from-orange-500 z-[0]' />
                 <div className='absolute left-0 top-0 w-full h-full px-4 lg:px-24 py-24 text-white z-[1] flex flex-col'>
                     <h1 className='text-6xl lg:text-9xl font-extrabold mt-auto'>Conte <br />Conosco</h1>
