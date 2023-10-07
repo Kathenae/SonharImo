@@ -7,7 +7,6 @@ use Illuminate\Filesystem\Filesystem;
 
 class SetupStorageCommand extends Command
 {
-
     /**
      * The name and signature of the console command.
      *
@@ -31,27 +30,26 @@ class SetupStorageCommand extends Command
     public function handle(Filesystem $filesystem)
     {
         $rootDirectory = $this->argument('storagePath');
-        if(!isset($rootDirectory) && isset($_ENV['APP_STORAGE'])){
+        if (!isset($rootDirectory) && isset($_ENV['APP_STORAGE'])) {
             $rootDirectory = $_ENV['APP_STORAGE'];
-        }
-        elseif (!isset($_ENV['APP_STORAGE'])){
+        } elseif (!isset($_ENV['APP_STORAGE'])) {
             $this->error('{storagePath} not provided, please provide it or set the APP_STORAGE environment variable');
             return;
         }
 
         $rootDirectory = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $rootDirectory);
-        if($filesystem->exists($rootDirectory) == false){
+        if ($filesystem->exists($rootDirectory) == false) {
             $filesystem->makeDirectory($rootDirectory);
         }
 
         $directories = [
             'app',
-            'app' . DIRECTORY_SEPARATOR .'public',
+            'app' . DIRECTORY_SEPARATOR . 'public',
             'framework',
-            'framework' . DIRECTORY_SEPARATOR .'cache',
-            'framework' . DIRECTORY_SEPARATOR .'sessions',
-            'framework' . DIRECTORY_SEPARATOR .'testing',
-            'framework' . DIRECTORY_SEPARATOR .'views',
+            'framework' . DIRECTORY_SEPARATOR . 'cache',
+            'framework' . DIRECTORY_SEPARATOR . 'sessions',
+            'framework' . DIRECTORY_SEPARATOR . 'testing',
+            'framework' . DIRECTORY_SEPARATOR . 'views',
             'logs',
         ];
 
@@ -65,6 +63,13 @@ class SetupStorageCommand extends Command
             }
 
             $filesystem->makeDirectory($directory);
+
+            // Create an empty log file if the directory is 'logs'
+            if ($directory === 'logs') {
+                $logFilePath = app()->joinPaths($directory, 'laravel.log');
+                $filesystem->put($logFilePath, '');
+                $filesystem->chmod($logFilePath, 0777);
+            }
         }
 
         $this->info("Storage structure generated.");
