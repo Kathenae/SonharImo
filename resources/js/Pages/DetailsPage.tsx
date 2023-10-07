@@ -15,7 +15,7 @@ export default function DetailsPage({ listing, auth }: PageProps<{ listing: Hous
             <div className="px-4 lg:px-24 mt-4">
                 <div className="grid lg:grid-cols-3 gap-4 bg-white py-4 px-4 rounded-lg">
                     <div className="lg:col-span-2 rounded-lg">
-                        <img src={listing.cover_image_url} className="rounded-lg"/>
+                        <img src={listing.cover_image_url} className="rounded-lg w-full"/>
                     </div>
                     <div className="px-4 flex flex-col">
                         <div className="flex justify-between">
