@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\HouseListing;
 use Inertia\Inertia;
+use Storage;
 
 class HouseListingController extends Controller
 {
@@ -107,9 +108,7 @@ class HouseListingController extends Controller
         // Handle file upload
         if ($request->hasFile('cover_image')) {
             $image = $request->file('cover_image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images'), $imageName);
-            $coverImageUrl = '/images/' . $imageName;
+            $coverImageUrl = Storage::url($image->storePublicly('public'));
         }
 
         // Create the house listing
