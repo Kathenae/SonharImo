@@ -3,7 +3,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "tsc && vite build && vite build --ssr && php artisan optimize && php artisan migrate --force && php artisan storage:generate && php artisan storage:link"
+        "build": "tsc && vite build && vite build --ssr"
     },
     "devDependencies": {
         "@headlessui/react": "^1.4.2",
