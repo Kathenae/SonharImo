@@ -1,6 +1,7 @@
 import { useState, PropsWithChildren, ReactNode, useEffect } from 'react';
 import NavLink from '@/Components/NavLink';
 import { User } from '@/types';
+import ApplicationLogo from '@/Components/ApplicationLogo';
 
 export default function Layout({ user, children }: PropsWithChildren<{ user: User }>) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -8,7 +9,7 @@ export default function Layout({ user, children }: PropsWithChildren<{ user: Use
 
     useEffect(() => {
         function handleSticky(){
-            if(window.scrollY >= window.innerHeight || !route().current('home-page')){
+            if(window.scrollY >= 80 || !route().current('home-page')){
                 setNavSticky(true)
             }
             else{
@@ -28,13 +29,12 @@ export default function Layout({ user, children }: PropsWithChildren<{ user: Use
         <div className="min-h-screen bg-gray-50">
             <nav className={`flex items-center w-full px-4 lg:px-24 z-50 transition-transform top-0 h-20 ${navSticky ? 'bg-white border-b border-dark-50 fixed' : 'fixed bg-white lg:absolute lg:bg-transparent border-b border-dark-50 lg:border-none'}`}>
                 <div>
-                    <img className='hidden lg:block' src={navSticky ? '/assets/logo-black.png' : '/assets/logo-full-white.png'} width="148" />
-                    <img className='lg:hidden' src={'/assets/logo-black.png'} width="148" />
+                    <ApplicationLogo black={navSticky}/>
                 </div>
                 <div className='ml-auto hidden lg:flex space-x-4 py-2'>
                     <NavLink className={!navSticky ? ' text-white !font-extrabold ' : ''} href={route('home-page')} active={route().current('home-page')}>Home</NavLink>
-                    <NavLink className={!navSticky ? ' text-white !font-extrabold ' : ''} href={route('list-page')} active={route().current('list-page')}>Propriedades</NavLink>
-                    <NavLink className={!navSticky ? ' text-white !font-extrabold ' : ''} href={route('form-page')} active={route().current('form-page')}>Anuncie</NavLink>
+                    <NavLink className={!navSticky ? ' text-white !font-extrabold ' : ''} href={route('listing.index')} active={route().current('listing.index')}>Propriedades</NavLink>
+                    <NavLink className={!navSticky ? ' text-white !font-extrabold ' : ''} href={route('listing.create')} active={route().current('listing.create')}>Anuncie</NavLink>
                     <NavLink className={!navSticky ? ' text-white !font-extrabold ' : ''} href={route('about-page')} active={route().current('about-page')}>Sobre-nos</NavLink>
                     <NavLink className={!navSticky ? ' text-white !font-extrabold ' : ''} href={route('contact-page')} active={route().current('contact-page')}>Contactos</NavLink>
                 </div>

@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\HouseListingController;
 use App\Http\Controllers\ProfileController;
+use App\Models\HouseListing;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,39 +20,18 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('HomePage', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
+        'popularListings' => HouseListing::mostPopular(),
     ]);
 })->name('home-page');
 
-Route::get('/imoveis', function () {
-    return Inertia::render('ListPage', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-})->name('list-page');
+Route::get('/procurar', [HouseListingController::class, 'index'])->name('listing.index');
+Route::get('/ver/{listing}', [HouseListingController::class, 'show'])->name('listing.show');
+Route::get('/anuncie', [HouseListingController::class, 'create'])->middleware('auth')->name('listing.create');
+Route::post('/anuncie', [HouseListingController::class, 'store'])->middleware('auth')->name('listing.store');
+Route::get('/alterar/{listing}', [HouseListingController::class, 'edit'])->middleware('auth')->name('listing.edit');
+Route::put('/alterar/{listing}', [HouseListingController::class, 'store'])->middleware('auth')->name('listing.update');
+Route::delete('/remover/{listing}', [HouseListingController::class, 'destroy'])->middleware('auth')->name('listing.destroy');
 
-Route::get('/imoveis/:id', function () {
-    return Inertia::render('DetailsPage', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-})->name('details-page');
-
-Route::get('/anuncie', function () {
-    return Inertia::render('FormPage', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-})->name('form-page');
 
 Route::get('/sobre-nos', function () {
     return Inertia::render('AboutPage', [

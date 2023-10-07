@@ -21,6 +21,14 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+
+        'profile_img_url',
+        'first_name',
+        'last_name',
+        'phone_number',
+        'secondary_phone_number',
+        'personal_id_number',
+        'address',
     ];
 
     /**
@@ -42,4 +50,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function house_listings(){
+        return $this->hasMany(HouseListing::class);
+    }
 }
