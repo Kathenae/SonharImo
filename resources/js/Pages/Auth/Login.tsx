@@ -36,10 +36,10 @@ export default function Login({ status, canResetPassword }: { status?: string, c
                 <h1 className='mb-6 text-2xl text-center'>Bem vindo</h1>
 
                 <div className='mb-6 flex flex-col text-lg'>
-                    <Link href={route('auth.google')} className="flex items-center justify-center space-x-2 bg-red-500 hover:bg-red-600 hover:mx-12 transition-all duration-300 text-white rounded-lg p-2">
+                    <a href={route('auth.google')} className="flex items-center justify-center space-x-2 bg-red-500 hover:bg-red-600 hover:mx-12 transition-all duration-300 text-white rounded-lg p-2">
                         <span className="i-akar-icons-google-fill"></span>
                         <span>Entrar com o Google</span>
-                    </Link>
+                    </a>
                 </div>
 
                 <div className="flex items-center justify-center space-x-4">

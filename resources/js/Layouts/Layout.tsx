@@ -8,10 +8,12 @@ import phoneIconPng from '../../../public/assets/phone-call-white.png'
 import whatsappIconPng from '../../../public/assets/whatsapp_white.png'
 import instagramIconPng from '../../../public/assets/instagram_white.png'
 import facebookIconPng from '../../../public/assets/facebook_white.png'
+import PrimaryButton from '@/Components/PrimaryButton';
+import { cn } from '@/utils';
 
 export default function Layout({ user, children }: PropsWithChildren<{ user: User }>) {
-    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const [navSticky, setNavSticky] = useState(false)
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
     useEffect(() => {
         function handleSticky(){
@@ -37,15 +39,59 @@ export default function Layout({ user, children }: PropsWithChildren<{ user: Use
                 <div>
                     <ApplicationLogo black={navSticky}/>
                 </div>
-                <div className='ml-auto hidden lg:flex space-x-4 py-2'>
-                    <NavLink className={!navSticky ? ' text-white !font-extrabold ' : ''} href={route('home-page')} active={route().current('home-page')}>Home</NavLink>
-                    <NavLink className={!navSticky ? ' text-white !font-extrabold ' : ''} href={route('listing.index')} active={route().current('listing.index')}>Propriedades</NavLink>
-                    <NavLink className={!navSticky ? ' text-white !font-extrabold ' : ''} href={route('listing.create')} active={route().current('listing.create')}>Anuncie</NavLink>
-                    <NavLink className={!navSticky ? ' text-white !font-extrabold ' : ''} href={route('about-page')} active={route().current('about-page')}>Sobre-nos</NavLink>
-                    <NavLink className={!navSticky ? ' text-white !font-extrabold ' : ''} href={route('contact-page')} active={route().current('contact-page')}>Contactos</NavLink>
+                <div className='ml-auto hidden md:flex space-x-4 py-2'>
+                    <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('home-page')} active={route().current('home-page')}>Home</NavLink>
+                    <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('listing.index')} active={route().current('listing.index')}>Propriedades</NavLink>
+                    <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('listing.create')} active={route().current('listing.create')}>Anuncie</NavLink>
+                    <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('about-page')} active={route().current('about-page')}>Sobre-nos</NavLink>
+                    <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('contact-page')} active={route().current('contact-page')}>Contactos</NavLink>
                 </div>
-                <div className='ml-auto lg:hidden'>
-                    <button>Toggle</button>
+                <div className='ml-auto md:hidden'>
+                    <PrimaryButton className='!bg-white' onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+                        <span className='icon-[lucide--menu] text-2xl' />
+                    </PrimaryButton>
+                </div>
+
+                {/* Mobile Menu */}
+                <div className={cn(
+                    'md:hidden absolute w-full flex flex-col bg-white rounded-b-xl left-0 px-4 h-0 overflow-hidden transition-all top-20 text-lg shadow-lg',
+                    mobileMenuOpen && 'h-48'
+                )}>
+                    <NavLink
+                        className='block py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-100'
+                        href={route('home-page')}
+                        active={route().current('home-page')}
+                    >
+                        Home
+                    </NavLink>
+                    <NavLink
+                        className='block py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-100'
+                        href={route('listing.index')}
+                        active={route().current('listing.index')}
+                    >
+                        Propriedades
+                    </NavLink>
+                    <NavLink
+                        className='block py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-100'
+                        href={route('listing.create')}
+                        active={route().current('listing.create')}
+                    >
+                        Anuncie
+                    </NavLink>
+                    <NavLink
+                        className='block py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-100'
+                        href={route('about-page')}
+                        active={route().current('about-page')}
+                    >
+                        Sobre-nos
+                    </NavLink>
+                    <NavLink
+                        className='block py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-100'
+                        href={route('contact-page')}
+                        active={route().current('contact-page')}
+                    >
+                        Contactos
+                    </NavLink>
                 </div>
             </nav>
 
