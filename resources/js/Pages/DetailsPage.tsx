@@ -3,6 +3,14 @@ import { HouseListing, PageProps } from "@/types";
 import { format_currency } from "@/utils";
 import { Head } from "@inertiajs/react";
 
+// assets
+import bedroomIconPng from '@assets/bedroom.png';
+import bathroomIconPng from '@assets/bathroom.png';
+import garageIconPng from '@assets/garage.png';
+import squarefootageIconPng from '@assets/squarefoot.png';
+import phoneIconPng from '@assets/phone-call-white.png';
+import whatsappIconPng from '@assets/whatsapp_white.png';
+
 export default function DetailsPage({ listing, auth }: PageProps<{ listing: HouseListing }>) {
     return (
         <Layout user={auth.user}>
@@ -20,19 +28,19 @@ export default function DetailsPage({ listing, auth }: PageProps<{ listing: Hous
                     <div className="px-4 flex flex-col">
                         <div className="flex justify-between">
                             <div className="flex items-center space-x-2">
-                                <img src="/assets/bedroom.png" width="38" />
+                                <img src={bedroomIconPng} width="38" />
                                 <span className="text-xl font-semibold">{listing.total_bedrooms}</span>
                             </div>
                             <div className="flex items-center space-x-2">
-                                <img src="/assets/bathroom.png" width="38" />
+                                <img src={bathroomIconPng} width="38" />
                                 <span className="text-xl font-semibold">{listing.total_bedrooms}</span>
                             </div>
                             <div className="flex items-center space-x-2">
-                                <img src="/assets/garage.png" width="38" />
+                                <img src={garageIconPng} width="38" />
                                 <span className="text-xl font-semibold">{listing.total_garages}</span>
                             </div>
                             <div className="flex items-center space-x-2">
-                                <img src="/assets/squarefoot.png" width="38" />
+                                <img src={squarefootageIconPng} width="38" />
                                 <span className="text-xl font-semibold">
                                     {400}
                                     <span className="relative text-base">
@@ -52,11 +60,11 @@ export default function DetailsPage({ listing, auth }: PageProps<{ listing: Hous
                             <h3 className="text-orange-500 font-bold text-2xl">Preço: <span className="text-gray-900">{format_currency(listing.price, 'MZN')}</span></h3>
                             <div className="grid grid-cols-3 lg:grid-cols-2 gap-x-4">
                                 <a role="button" className='px-4 py-2 bg-orange-500 hover:bg-orange-600 rounded-md font-bold text-white mt-4 text-lg flex items-center space-x-2'>
-                                    <img width="24" src='/assets/phone-call-white.png' />
+                                    <img width="24" src={phoneIconPng} />
                                     <span>Ligar Agora</span>
                                 </a>
                                 <a role="button" className='px-4 py-2 bg-orange-500 hover:bg-orange-600 rounded-md font-bold text-white mt-4 text-lg flex items-center space-x-2'>
-                                    <img width="24" src='/assets/whatsapp_white.png' />
+                                    <img width="24" src={whatsappIconPng} />
                                     <span>Whatsapp</span>
                                 </a>
                             </div>

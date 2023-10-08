@@ -2,6 +2,8 @@ import Layout from "@/Layouts/Layout";
 import { PageProps } from "@/types";
 import { Head } from "@inertiajs/react";
 
+import aboutPng from '../../../public/assets/about.png'
+
 export default function AboutPage({ auth, laravelVersion, phpVersion }: PageProps<{ laravelVersion: string, phpVersion: string }>){
     return (
         <Layout user={auth.user}>
@@ -24,7 +26,7 @@ export default function AboutPage({ auth, laravelVersion, phpVersion }: PageProp
                 </div>
             </div>
 
-            <img className="absolute right-0 top-24 hidden lg:block" width={700} src="/assets/about.png" />
+            <img className="absolute right-0 top-24 hidden lg:block" width={700} src={aboutPng}/>
         </Layout>
     )
 }

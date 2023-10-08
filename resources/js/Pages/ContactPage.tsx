@@ -2,7 +2,14 @@ import Layout from "@/Layouts/Layout";
 import { PageProps } from "@/types";
 import { Head } from "@inertiajs/react";
 
-export default function ContactPage({ auth, laravelVersion, phpVersion }: PageProps<{ laravelVersion: string, phpVersion: string }>){
+// assets
+import phoneIconPng from '@assets/phone-call-grey.png';
+import whatsappIconPng from '@assets/whatsapp_grey.png';
+import instagramIconPng from '@assets/instagram_grey.png';
+import facebookIconPng from '@assets/facebook_grey.png';
+import contactPng from '@assets/contact.png';
+
+export default function ContactPage({ auth, laravelVersion, phpVersion }: PageProps<{ laravelVersion: string, phpVersion: string }>) {
     return (
         <Layout user={auth.user}>
             <Head title="Contactos" />
@@ -11,19 +18,19 @@ export default function ContactPage({ auth, laravelVersion, phpVersion }: PagePr
                 <h1 className="text-gray-900 text-5xl lg:text-6xl font-bold">Contacte-<span className="text-orange-500">Nos</span></h1>
                 <div className='flex flex-col space-y-4 text-4xl mt-8 pl-8'>
                     <div className='flex items-center space-x-2'>
-                        <img width="32" src='/assets/phone-call-grey.png' />
+                        <img width="32" src={phoneIconPng} />
                         <a href="">Telefone</a>
                     </div>
                     <div className='flex items-center space-x-2'>
-                        <img width="32" src='/assets/whatsapp_grey.png' />
+                        <img width="32" src={whatsappIconPng} />
                         <a href="">Whatsapp</a>
                     </div>
                     <div className='flex items-center space-x-2'>
-                        <img width="32" src='/assets/instagram_grey.png' />
+                        <img width="32" src={instagramIconPng} />
                         <a href="">Instagram</a>
                     </div>
                     <div className='flex items-center space-x-2'>
-                        <img width="32" src='/assets/facebook_grey.png' />
+                        <img width="32" src={facebookIconPng} />
                         <a href="">Facebook</a>
                     </div>
                 </div>
@@ -32,7 +39,7 @@ export default function ContactPage({ auth, laravelVersion, phpVersion }: PagePr
                 </div>
             </div>
 
-            <img className="absolute right-0 top-24 hidden lg:block" width={600} src="/assets/contact.png" />
+            <img className="absolute right-0 top-24 hidden lg:block" width={600} src={contactPng} />
         </Layout>
     )
 }

@@ -3,6 +3,12 @@ import NavLink from '@/Components/NavLink';
 import { User } from '@/types';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 
+import logoWhitePng from '../../../public/assets/logo-white.png'
+import phoneIconPng from '../../../public/assets/phone-call-white.png'
+import whatsappIconPng from '../../../public/assets/whatsapp_white.png'
+import instagramIconPng from '../../../public/assets/instagram_white.png'
+import facebookIconPng from '../../../public/assets/facebook_white.png'
+
 export default function Layout({ user, children }: PropsWithChildren<{ user: User }>) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const [navSticky, setNavSticky] = useState(false)
@@ -49,7 +55,7 @@ export default function Layout({ user, children }: PropsWithChildren<{ user: Use
                 <div className='px-4 lg:px-24 py-8'>
                     <div className="grid gap-4 lg:grid-cols-4">
                         <div className='flex flex-col space-y-2'>
-                            <img src='/assets/logo-white.png' width="128" />
+                            <img src={logoWhitePng} width="128" />
                             <span className='mt-4'>Copyrights 2023</span>
                         </div>
                         <div className='flex flex-col space-y-2'>
@@ -60,19 +66,19 @@ export default function Layout({ user, children }: PropsWithChildren<{ user: Use
                         </div>
                         <div className='flex flex-col space-y-2'>
                             <div className='flex items-center space-x-2'>
-                                <img width="18" src='/assets/phone-call-white.png' />
+                                <img width="18" src={phoneIconPng} />
                                 <a href="">Telefone</a>
                             </div>
                             <div className='flex items-center space-x-2'>
-                                <img width="18" src='/assets/whatsapp_white.png' />
+                                <img width="18" src={whatsappIconPng} />
                                 <a href="">Whatsapp</a>
                             </div>
                             <div className='flex items-center space-x-2'>
-                                <img width="18" src='/assets/instagram_white.png' />
+                                <img width="18" src={instagramIconPng} />
                                 <a href="">Instagram</a>
                             </div>
                             <div className='flex items-center space-x-2'>
-                                <img width="18" src='/assets/facebook_white.png' />
+                                <img width="18" src={facebookIconPng} />
                                 <a href="">Facebook</a>
                             </div>
                         </div>

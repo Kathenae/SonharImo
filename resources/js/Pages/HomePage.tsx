@@ -5,9 +5,14 @@ import HouseCard from '@/Components/HouseCard';
 import { cn } from '@/utils';
 import { useBreakpoint } from '@/hooks/useMediaQuery';
 
-import coupleMobileJpg from '../../../public/assets/Couple-mobile.jpg';
-import coupleTabletJpg from '../../../public/assets/Couple-tablet.jpg';
-import coupleDesktopJpg from '../../../public/assets/Couple.jpg';
+// assets
+import coupleMobileJpg from '@assets/Couple-mobile.jpg';
+import coupleTabletJpg from '@assets/Couple-tablet.jpg';
+import coupleDesktopJpg from '@assets/Couple.jpg';
+import buyHouseIconPng from '@assets/buy-house-icon.png';
+import partnerLogo1Jpeg from '@assets/partner_1.jpeg';
+import partnerLogo2Png from '@assets/partner_2.png';
+import partnerLogo3Png from '@assets/partner_3.png';
 
 export default function HomePage({ auth, popularListings }: PageProps<{ popularListings: HouseListing[] }>) {
 
@@ -35,7 +40,7 @@ export default function HomePage({ auth, popularListings }: PageProps<{ popularL
                 <div className='grid lg:grid-cols-3 gap-32 lg:gap-32 mt-12'>
                     <div className='rounded-lg shadow-xl bg-white px-8 py-8 text-center relative'>
                         <div className='bg-orange-500 rounded-lg flex items-center justify-center w-full h-[218px]'>
-                            <img src="/assets/buy-house-icon.png" width='128' height='128'/>
+                            <img src={buyHouseIconPng} width='128' height='128'/>
                         </div>
                         <h3 className='text-orange-500 font-bold text-2xl mt-4 mb-4'>ALUGUER DE IMOVÉIS</h3>
                         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odit aliquid totam harum accusantium exercitationem, dignissimos voluptates eum.</p>
@@ -45,7 +50,7 @@ export default function HomePage({ auth, popularListings }: PageProps<{ popularL
                     </div>
                     <div className='rounded-lg shadow-xl bg-white px-8 py-8 text-center relative'>
                         <div className='bg-orange-500 rounded-lg flex items-center justify-center w-full h-[218px]'>
-                            <img src="/assets/buy-house-icon.png" width='128' height='128'/>
+                            <img src={buyHouseIconPng} width='128' height='128'/>
                         </div>
                         <h3 className='text-orange-500 font-bold text-2xl mt-4 mb-4'>VENDA DE IMOVÉIS</h3>
                         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odit aliquid totam harum accusantium exercitationem, dignissimos voluptates eum.</p>
@@ -55,7 +60,7 @@ export default function HomePage({ auth, popularListings }: PageProps<{ popularL
                     </div>
                     <div className='rounded-lg shadow-xl bg-white px-8 py-8 text-center relative'>
                         <div className='bg-orange-500 rounded-lg flex items-center justify-center w-full h-[218px]'>
-                            <img src="/assets/buy-house-icon.png" width='128' height='128'/>
+                            <img src={buyHouseIconPng} width='128' height='128'/>
                         </div>
                         <h3 className='text-orange-500 font-bold text-2xl mt-4 mb-4'>ANUNCIE SEU IMOVÉL</h3>
                         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odit aliquid totam harum accusantium exercitationem, dignissimos voluptates eum.</p>
@@ -70,13 +75,13 @@ export default function HomePage({ auth, popularListings }: PageProps<{ popularL
                 <h1 className='text-4xl md:text-6xl text-center font-extrabold text-gray-800'>Nossos Parceiros!</h1>
                 <div className='flex items-center flex-col lg:flex-row justify-center space-y-4 lg:space-y-0 lg:space-x-16 mt-12 w-full'>
                     <div className='w-[50vw] h-[50vw] lg:w-[20vw] lg:h-[20vw] flex items-center justify-center shadow-2xl shadow-red-800 rounded-full bg-[#c50010] overflow-clip'>
-                        <img className='w-[40vw] lg:w-[18vw]' src='/assets/partner_1.jpeg'/>
+                        <img className='w-[40vw] lg:w-[18vw]' src={partnerLogo1Jpeg}/>
                     </div>
                     <div className='w-[50vw] h-[50vw] lg:w-[20vw] lg:h-[20vw] flex items-center justify-center shadow-2xl shadow-gray-800 rounded-full bg-gray-800'>
-                        <img className='w-[40vw] lg:w-[18vw]' src='/assets/partner_2.png'/>
+                        <img className='w-[40vw] lg:w-[18vw]' src={partnerLogo2Png}/>
                     </div>
                     <div className='w-[50vw] h-[50vw] lg:w-[20vw] lg:h-[20vw] flex items-center justify-center shadow-2xl shadow-gray-800 rounded-full bg-gray-800'>
-                        <img className='w-[40vw] lg:w-[18vw]' src='/assets/partner_3.png'/>
+                        <img className='w-[40vw] lg:w-[18vw]' src={partnerLogo3Png}/>
                     </div>
                 </div>
             </section>
