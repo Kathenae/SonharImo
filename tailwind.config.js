@@ -1,5 +1,6 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
+import { iconsPlugin, getIconCollections } from "@egoist/tailwindcss-icons"
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -18,5 +19,10 @@ export default {
         },
     },
 
-    plugins: [forms],
+    plugins: [
+        forms,
+        iconsPlugin({
+            collections: getIconCollections(["mdi", "akar-icons"]),
+        }),
+    ],
 };

@@ -9,7 +9,12 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Models\User;
+use App\Providers\RouteServiceProvider;
+use DragonCode\Support\Facades\Helpers\Str;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
@@ -56,4 +61,31 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
+});
+
+// Socialite auth routes
+Route::middleware('guest')->group(function () {
+
+    Route::get('/auth/redirect', function() {
+        return Socialite::driver('google')->redirect();
+    })->name('auth.google');
+
+    Route::get('/auth/callback', function() {
+        $googleUser = Socialite::driver('google')->user();
+
+        $user = User::updateOrCreate([
+            'email' => $googleUser->email,
+        ],[
+            'name' => $googleUser->name,
+            'email' => $googleUser->email,
+            'google_id' => $googleUser->id,
+            'google_token' => $googleUser->token,
+            'google_refresh_token' => $googleUser->refreshToken,
+            'password' => Hash::make(Str::random()),
+            'profile_img_url' => $googleUser->getAvatar(),
+        ]);
+
+        Auth::login($user);
+        return redirect()->intended(RouteServiceProvider::HOME);
+    });
 });

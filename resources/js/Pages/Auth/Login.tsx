@@ -34,7 +34,21 @@ export default function Login({ status, canResetPassword }: { status?: string, c
 
             <form onSubmit={submit}>
                 <h1 className='mb-6 text-2xl text-center'>Bem vindo</h1>
-                <div>
+
+                <div className='mb-6 flex flex-col text-lg'>
+                    <Link href={route('auth.google')} className="flex items-center justify-center space-x-2 bg-red-500 hover:bg-red-600 hover:mx-12 transition-all duration-300 text-white rounded-lg p-2">
+                        <span className="i-akar-icons-google-fill"></span>
+                        <span>Entrar com o Google</span>
+                    </Link>
+                </div>
+
+                <div className="flex items-center justify-center space-x-4">
+                    <hr className="flex-grow border-gray-300" />
+                    <span className="text-gray-500">ou</span>
+                    <hr className="flex-grow border-gray-300" />
+                </div>
+
+                <div className='mt-6'>
                     <InputLabel htmlFor="email" value="Email" />
 
                     <TextInput
