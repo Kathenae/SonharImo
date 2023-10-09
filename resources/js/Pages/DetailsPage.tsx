@@ -10,8 +10,6 @@ import garageIconPng from '@assets/garage.png';
 import squarefootageIconPng from '@assets/squarefoot.png';
 import phoneIconPng from '@assets/phone-call-white.png';
 import whatsappIconPng from '@assets/whatsapp_white.png';
-import { useState } from "react";
-import { animate } from "framer-motion";
 import ImageGallery from "@/Components/ImageGallery";
 
 export default function DetailsPage({ listing, auth }: PageProps<{ listing: HouseListing }>) {
@@ -62,11 +60,11 @@ export default function DetailsPage({ listing, auth }: PageProps<{ listing: Hous
                         <div className="mt-4 lg:mt-auto">
                             <h3 className="text-orange-500 font-bold text-2xl">Preço: <span className="text-gray-900">{format_currency(listing.price, 'MZN')}</span></h3>
                             <div className="flex flex-col">
-                                <a role="button" className='px-4 py-2 bg-orange-500 hover:bg-orange-600 rounded-md font-bold text-white mt-4 text-lg flex items-center space-x-2'>
+                                <a href={`tel:${listing.owner_phone_number}`} role="button" className='px-4 py-2 bg-orange-500 hover:bg-orange-600 rounded-md font-bold text-white mt-4 text-lg flex items-center space-x-2'>
                                     <img width="24" src={phoneIconPng} />
                                     <span>Ligar Agora</span>
                                 </a>
-                                <a role="button" className='px-4 py-2 bg-orange-500 hover:bg-orange-600 rounded-md font-bold text-white mt-4 text-lg flex items-center space-x-2'>
+                                <a href={`https://wa.me/${listing.owner_phone_number}`} role="button" className='px-4 py-2 bg-orange-500 hover:bg-orange-600 rounded-md font-bold text-white mt-4 text-lg flex items-center space-x-2'>
                                     <img width="24" src={whatsappIconPng} />
                                     <span>Whatsapp</span>
                                 </a>
