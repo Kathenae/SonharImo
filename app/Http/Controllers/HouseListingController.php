@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\HouseListing;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Storage;
 
@@ -64,7 +65,7 @@ class HouseListingController extends Controller
             }
         }
 
-        $listings = $query->get();
+        $listings = $query->with('images')->get();
 
         return Inertia::render('ListPage', [
             'listings' => $listings
@@ -85,7 +86,8 @@ class HouseListingController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'cover_image' => 'required|image|max:16000',
+            'images' => 'array|min:1',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:20720',
             'province' => 'required|string',
             'city' => 'required|string',
             'address' => 'required|string',
@@ -105,15 +107,8 @@ class HouseListingController extends Controller
             'owner_email_address' => 'required|email',
         ]);
 
-        // Handle file upload
-        if ($request->hasFile('cover_image')) {
-            $image = $request->file('cover_image');
-            $coverImageUrl = Storage::url($image->storePublicly('public'));
-        }
-
         // Create the house listing
         $listing = HouseListing::create([
-            'cover_image_url' => $coverImageUrl ?? null,
             'province' => $request->province,
             'city' => $request->city,
             'address' => $request->address,
@@ -133,6 +128,18 @@ class HouseListingController extends Controller
             'owner_email_address' => $request->owner_email_address,
             'user_id' => $request->user()->id,
         ]);
+
+        // Handle file upload
+        if ($request->hasFile('images')) {
+            $images = $request->images;
+            foreach($images as $image){
+                $image_url = Storage::url($image->storePublicly('public'));
+                DB::table('house_images')->insert([
+                    'url' => $image_url,
+                    'house_listing_id' => $listing->id
+                ]);
+            }
+        }
 
         return redirect()->route('listing.show', $listing->id)->with('success', 'House listing created successfully.');
     }
@@ -143,7 +150,7 @@ class HouseListingController extends Controller
     public function show(HouseListing $listing)
     {
         return Inertia::render('DetailsPage', [
-            'listing' => $listing
+            'listing' => $listing->load('images')
         ]);
     }
 
@@ -153,7 +160,7 @@ class HouseListingController extends Controller
     public function edit(HouseListing $listing)
     {
         return Inertia::render('FormPage', [
-            'listing' => $listing
+            'listing' => $listing->load('images')
         ]);
     }
 
@@ -163,7 +170,8 @@ class HouseListingController extends Controller
     public function update(Request $request, HouseListing $listing)
     {
         $request->validate([
-            'cover_image' => 'nullable|image|max:2048',
+            'images' => 'array|min:1',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:20720',
             'province' => 'required|string',
             'city' => 'required|string',
             'address' => 'required|string',
@@ -183,17 +191,8 @@ class HouseListingController extends Controller
             'owner_email_address' => 'required|email',
         ]);
 
-        // Handle file upload
-        if ($request->hasFile('cover_image')) {
-            $image = $request->file('cover_image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images'), $imageName);
-            $coverImageUrl = '/images/' . $imageName;
-        }
-
         // Update the house listing
         $listing->update([
-            'cover_image_url' => $coverImageUrl ?? $listing->cover_image_url,
             'province' => $request->province,
             'city' => $request->city,
             'address' => $request->address,
@@ -213,6 +212,19 @@ class HouseListingController extends Controller
             'owner_email_address' => $request->owner_email_address,
             'user_id' => $request->user()->id,
         ]);
+
+        // Handle file upload
+        if ($request->hasFile('images')) {
+            $images = $request->images;
+            foreach($images as $image){
+                $image = $request->file('images');
+                $image_url = Storage::url($image->storePublicly('public'));
+                DB::table('house_images')->insert([
+                    'url' => $image_url,
+                    'house_id' => $listing->id
+                ]);
+            }
+        }
 
         return redirect()->route('listing.show', $listing->id)->with('success', 'House listing updated successfully.');
     }

@@ -16,6 +16,9 @@ export default {
             fontFamily: {
                 sans: ['Poppins', ...defaultTheme.fontFamily.sans],
             },
+            screens: {
+                'md': "1080px",
+            }
         },
     },
 

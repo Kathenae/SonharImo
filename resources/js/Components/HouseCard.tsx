@@ -1,5 +1,6 @@
 import { HouseListing } from "@/types"
 import { format_currency } from "@/utils"
+import { router } from "@inertiajs/react"
 
 type HouseCardProps = {
     listing: HouseListing
@@ -8,13 +9,13 @@ type HouseCardProps = {
 export default function HouseCard({ listing }: HouseCardProps) {
     return (
         <>
-            <div className="rounded-lg shadow-xl bg-white relative">
+            <div className="rounded-lg shadow-xl bg-white relative hover:cursor-pointer" onClick={() => router.visit(route('listing.show', {listing: listing.id}))}>
                 <div className={`px-4 rounded-ss-lg rounded-ee-lg shadow-xl font-bold text-white absolute text-2xl ${listing.deal_type === 'rent' ? 'bg-gray-800' : 'bg-orange-500'}`}>
                     {listing.deal_type === 'rent' ? 'ALUGUER' : 'VENDA'}
                 </div>
                 <div className="px-6 mt-6">
                     <div className="overflow-hidden h-[214px]">
-                        <img src={listing.cover_image_url ?? "/assets/house-default.jpg"} className="w-full" />
+                        <img src={listing.images[0].url ?? "/assets/house-default.jpg"} className="w-full" />
                     </div>
                 </div>
 

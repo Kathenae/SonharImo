@@ -10,7 +10,6 @@ class HouseListing extends Model
     use HasFactory;
 
     protected $fillable = [
-        'cover_image_url',
         'province',
         'city',
         'address',
@@ -36,7 +35,11 @@ class HouseListing extends Model
     }
 
     public static function mostPopular(){
-        $listings = HouseListing::all();
+        $listings = HouseListing::all()->load('images');
         return $listings;
+    }
+
+    public function images(){
+        return $this->hasMany(HouseImage::class);
     }
 }

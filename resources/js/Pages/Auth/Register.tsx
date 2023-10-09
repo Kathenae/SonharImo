@@ -34,7 +34,7 @@ export default function Register() {
             <Head title="Register" />
 
             <form onSubmit={submit}>
-                <h1 className='mb-6 text-2xl text-center'>Criar uma conta</h1>
+                <h1 className='mb-4 text-xl text-center font-thin'>Criar uma conta</h1>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <InputLabel htmlFor="name" value="Nome" />

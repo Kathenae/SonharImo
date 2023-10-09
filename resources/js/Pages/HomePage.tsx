@@ -38,36 +38,36 @@ export default function HomePage({ auth, popularListings }: PageProps<{ popularL
             <section className='px-4 lg:px-24 mt-20 lg:mt-28'>
                 <h1 className='text-4xl md:text-6xl font-extrabold text-gray-800 text-center'>Nossos Serviços!</h1>
                 <div className='grid lg:grid-cols-3 gap-32 lg:gap-32 mt-12'>
-                    <div className='rounded-lg shadow-xl bg-white px-8 py-8 text-center relative'>
+                    <article className='rounded-lg shadow-xl bg-white px-8 py-8 text-center relative'>
                         <div className='bg-orange-500 rounded-lg flex items-center justify-center w-full h-[218px]'>
                             <img src={buyHouseIconPng} width='128' height='128'/>
                         </div>
                         <h3 className='text-orange-500 font-bold text-2xl mt-4 mb-4'>ALUGUER DE IMOVÉIS</h3>
-                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odit aliquid totam harum accusantium exercitationem, dignissimos voluptates eum.</p>
+                        <p>Aluguel de imóveis em diversas localidades. Oferecemos uma variedade de opções de imóveis para atender às suas necessidades seja um estudante</p>
                         <div className='absolute w-full flex items-center justify-center left-0 -bottom-8'>
-                            <a className='px-4 py-2 rounded-lg bg-gray-800 font-bold text-white text-2xl w-48' href="">ALUGAR</a>
+                            <a className='px-4 py-2 rounded-lg bg-gray-800 font-bold text-white text-2xl w-48' href={route('listing.index', {deal_type: 'rent'})}>ALUGAR</a>
                         </div>
-                    </div>
-                    <div className='rounded-lg shadow-xl bg-white px-8 py-8 text-center relative'>
+                    </article>
+                    <article className='rounded-lg shadow-xl bg-white px-8 py-8 text-center relative'>
                         <div className='bg-orange-500 rounded-lg flex items-center justify-center w-full h-[218px]'>
                             <img src={buyHouseIconPng} width='128' height='128'/>
                         </div>
                         <h3 className='text-orange-500 font-bold text-2xl mt-4 mb-4'>VENDA DE IMOVÉIS</h3>
-                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odit aliquid totam harum accusantium exercitationem, dignissimos voluptates eum.</p>
+                        <p>Temos uma seleção exclusiva de imóveis à venda. desde apartamento ou terreno, temos a propriedade perfeita para você. compre agora!</p>
                         <div className='absolute w-full flex items-center justify-center left-0 -bottom-8'>
-                            <a className='px-4 py-2 rounded-lg bg-gray-800 font-bold text-white text-2xl w-48' href="">COMPRAR</a>
+                            <a className='px-4 py-2 rounded-lg bg-gray-800 font-bold text-white text-2xl w-48' href={route('listing.index', {deal_type: 'sale'})}>COMPRAR</a>
                         </div>
-                    </div>
-                    <div className='rounded-lg shadow-xl bg-white px-8 py-8 text-center relative'>
+                    </article>
+                    <article className='rounded-lg shadow-xl bg-white px-8 py-8 text-center relative'>
                         <div className='bg-orange-500 rounded-lg flex items-center justify-center w-full h-[218px]'>
                             <img src={buyHouseIconPng} width='128' height='128'/>
                         </div>
                         <h3 className='text-orange-500 font-bold text-2xl mt-4 mb-4'>ANUNCIE SEU IMOVÉL</h3>
-                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odit aliquid totam harum accusantium exercitationem, dignissimos voluptates eum.</p>
+                        <p>Anuncie seu imóvel conosco e alcance potenciais interessados. Nossa plataforma é fácil de usar e oferece visibilidade. Não perca tempo, anuncie agora!</p>
                         <div className='absolute w-full flex items-center justify-center left-0 -bottom-8'>
-                            <a className='px-4 py-2 rounded-lg bg-gray-800 font-bold text-white text-2xl w-48' href="">ANUNCIAR</a>
+                            <a className='px-4 py-2 rounded-lg bg-gray-800 font-bold text-white text-2xl w-48' href={route('listing.create')}>ANUNCIAR</a>
                         </div>
-                    </div>
+                    </article>
                 </div>
             </section>
 
@@ -91,7 +91,7 @@ export default function HomePage({ auth, popularListings }: PageProps<{ popularL
                     <h1 className='text-4xl md:text-6xl text-center font-extrabold text-gray-800'>Em Destaque</h1>
                     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mt-12'>
                         {popularListings.slice(0, 6).map((listing) => (
-                            <HouseCard listing={listing} />
+                            <HouseCard key={listing.id} listing={listing} />
                         ))}
                     </div>
                 </section>

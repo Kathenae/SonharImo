@@ -12,6 +12,7 @@
         "laravel/sanctum": "^3.2",
         "laravel/socialite": "^5.9",
         "laravel/tinker": "^2.8",
+        "spatie/laravel-image-optimizer": "^1.7",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {

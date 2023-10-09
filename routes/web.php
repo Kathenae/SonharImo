@@ -27,9 +27,9 @@ Route::get('/', function () {
 Route::get('/procurar', [HouseListingController::class, 'index'])->name('listing.index');
 Route::get('/ver/{listing}', [HouseListingController::class, 'show'])->name('listing.show');
 Route::get('/anuncie', [HouseListingController::class, 'create'])->middleware('auth')->name('listing.create');
-Route::post('/anuncie', [HouseListingController::class, 'store'])->middleware('auth')->name('listing.store');
+Route::post('/anuncie', [HouseListingController::class, 'store'])->middleware(['auth', 'optimizeImages'])->name('listing.store');
 Route::get('/alterar/{listing}', [HouseListingController::class, 'edit'])->middleware('auth')->name('listing.edit');
-Route::put('/alterar/{listing}', [HouseListingController::class, 'store'])->middleware('auth')->name('listing.update');
+Route::put('/alterar/{listing}', [HouseListingController::class, 'store'])->middleware(['auth', 'optimizeImages'])->name('listing.update');
 Route::delete('/remover/{listing}', [HouseListingController::class, 'destroy'])->middleware('auth')->name('listing.destroy');
 
 

@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('house_listings', function (Blueprint $table) {
             $table->id();
-            $table->string('cover_image_url');
             $table->string('province');
             $table->string('city');
             $table->string('address');

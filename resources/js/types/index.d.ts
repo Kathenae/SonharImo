@@ -5,9 +5,15 @@ export interface User {
     email_verified_at: string;
 }
 
+interface HouseImage {
+    id: number,
+    url: string,
+    house_id: number,
+}
+
 interface HouseListing {
     id: number;
-    cover_image_url: string;
+    images: HouseImage[],
     province: string;
     city: string;
     address: string;
