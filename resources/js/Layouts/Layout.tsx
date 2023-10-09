@@ -48,7 +48,7 @@ export default function Layout({ user, children }: PropsWithChildren<{ user: Use
                 </div>
                 <div className='ml-auto md:hidden'>
                     <PrimaryButton className='!bg-white' onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-                        <span className='icon-[lucide--menu] text-2xl' />
+                        <span className='icon-[lucide--menu] text-black text-2xl' />
                     </PrimaryButton>
                 </div>
 
