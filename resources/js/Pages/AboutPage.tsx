@@ -4,9 +4,9 @@ import { Head } from "@inertiajs/react";
 
 import aboutPng from '../../../public/assets/about.png'
 
-export default function AboutPage({ auth, laravelVersion, phpVersion }: PageProps<{ laravelVersion: string, phpVersion: string }>){
+export default function AboutPage({ auth, flash }: PageProps) {
     return (
-        <Layout user={auth.user}>
+        <Layout user={auth.user} flashMessages={flash}>
             <Head title="Sobre-nos" />
 
             <div className="pt-24 px-4 lg:px-24 text-2xl">

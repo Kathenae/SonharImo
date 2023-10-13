@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\HouseImage;
 use App\Models\HouseListing;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
-use Storage;
 
-class HouseListingController extends Controller
+class ManageController extends Controller
 {
     /**
-     * Display a listing of the house listings.
+     * Display a listing of the house listings for the current user.
      */
     public function index(Request $request)
     {
@@ -21,29 +22,28 @@ class HouseListingController extends Controller
         if ($request->has('province')) {
             $province = $request->input('province');
 
-            if (isset($province)){
+            if (isset($province)) {
                 $query->where('province', $province);
             }
         }
 
+        // filter by address
         if ($request->has('address')) {
             $address = $request->input('address');
 
-            if (isset($address)){
+            if (isset($address)) {
                 $query->where('address', 'like', "%$address%");
             }
         }
 
         // Filter by price range
-        if ($request->has('price') ) {
+        if ($request->has('price')) {
             $price = explode(",", $request->input('price'));
 
-            if(isset($price[0]) && is_numeric($price[0]) && isset($price[1]) && is_numeric($price[1]))
-            {
+            if (isset($price[0]) && is_numeric($price[0]) && isset($price[1]) && is_numeric($price[1])) {
                 $query->whereBetween('price', [$price[0], $price[1]]);
 
-            }
-            else if (isset($price[0]) && is_numeric($price[0])){
+            } else if (isset($price[0]) && is_numeric($price[0])) {
                 $query->where('price', '<=', $price[0]);
             }
         }
@@ -51,7 +51,7 @@ class HouseListingController extends Controller
         // Filter by deal_type
         if ($request->has('deal_type')) {
             $dealType = $request->input('deal_type');
-            if (isset($dealType)){
+            if (isset($dealType)) {
                 $query->where('deal_type', $dealType);
             }
         }
@@ -60,33 +60,35 @@ class HouseListingController extends Controller
         if ($request->has('total_bedrooms')) {
             $totalBedrooms = $request->input('total_bedrooms');
 
-            if (isset($totalBedrooms)){
+            if (isset($totalBedrooms)) {
                 $query->where('total_bedrooms', $totalBedrooms);
             }
         }
 
-        $listings = $query->with('images')->get();
+        $listings = $query->where('user_id', $request->user()->id)->with('images')->get();
 
-        return Inertia::render('ListPage', [
+        return Inertia::render('ManagePage', [
             'listings' => $listings
         ]);
     }
 
     /**
-     * Show the form for creating a new house listing.
+     * Show the form for editing the specified house listing.
      */
-    public function create()
+    public function edit(HouseListing $listing)
     {
-        return Inertia::render('FormPage');
+        return Inertia::render('FormPage', [
+            'listing' => $listing->load('images')
+        ]);
     }
 
     /**
-     * Store a newly created house listing in storage.
+     * Update the specified house listing in storage.
      */
-    public function store(Request $request)
+    public function update(Request $request, HouseListing $listing)
     {
         $request->validate([
-            'images' => 'array|min:1',
+            'images' => 'array',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:20720',
             'province' => 'required|string',
             'city' => 'required|string',
@@ -107,8 +109,8 @@ class HouseListingController extends Controller
             'owner_email_address' => 'required|email',
         ]);
 
-        // Create the house listing
-        $listing = HouseListing::create([
+        // Update the house listing
+        $listing->update([
             'province' => $request->province,
             'city' => $request->city,
             'address' => $request->address,
@@ -141,16 +143,29 @@ class HouseListingController extends Controller
             }
         }
 
-        return redirect()->route('listing.show', $listing->id)->with('success', 'House listing created successfully.');
+        return redirect()->route('listing.edit', $listing->id)->with('flash.success', 'Dados do imóvel atualizados com sucesso');
     }
 
     /**
-     * Display the specified house listing.
+     * Remove the specified house listing from storage.
      */
-    public function show(HouseListing $listing)
+    public function destroy(HouseListing $listing)
     {
-        return Inertia::render('DetailsPage', [
-            'listing' => $listing->load('images')
-        ]);
+        $listing->delete();
+        return redirect()->route('listing.manage')->with('flash.success', 'O Imóvel foi removido. essa ação não pode ser revertida');
+    }
+
+    /**
+     * Remove the specified house image from storage.
+     */
+    public function deleteImage(Request $request, HouseImage $image)
+    {
+        if($image->house->user_id == $request->user()->id){
+            $filePath = str_replace('/storage/', 'public/', $image->url);
+            Storage::delete($filePath);
+            $image->delete();
+        }
+
+        return back()->with('flash.success', 'Imagem foi apagada');
     }
 }

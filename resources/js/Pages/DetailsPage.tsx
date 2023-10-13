@@ -12,10 +12,10 @@ import phoneIconPng from '@assets/phone-call-white.png';
 import whatsappIconPng from '@assets/whatsapp_white.png';
 import ImageGallery from "@/Components/ImageGallery";
 
-export default function DetailsPage({ listing, auth }: PageProps<{ listing: HouseListing }>) {
+export default function DetailsPage({ listing, auth, flash }: PageProps<{ listing: HouseListing }>) {
 
     return (
-        <Layout user={auth.user}>
+        <Layout user={auth.user} flashMessages={flash}>
             <Head title="Home" />
 
             <div className="px-4 lg:px-24 pt-24">

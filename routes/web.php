@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HouseListingController;
+use App\Http\Controllers\ManageController;
 use App\Http\Controllers\ProfileController;
 use App\Models\HouseListing;
 use Illuminate\Foundation\Application;
@@ -28,10 +29,15 @@ Route::get('/procurar', [HouseListingController::class, 'index'])->name('listing
 Route::get('/ver/{listing}', [HouseListingController::class, 'show'])->name('listing.show');
 Route::get('/anuncie', [HouseListingController::class, 'create'])->middleware('auth')->name('listing.create');
 Route::post('/anuncie', [HouseListingController::class, 'store'])->middleware(['auth', 'optimizeImages'])->name('listing.store');
-Route::get('/alterar/{listing}', [HouseListingController::class, 'edit'])->middleware('auth')->name('listing.edit');
-Route::put('/alterar/{listing}', [HouseListingController::class, 'store'])->middleware(['auth', 'optimizeImages'])->name('listing.update');
-Route::delete('/remover/{listing}', [HouseListingController::class, 'destroy'])->middleware('auth')->name('listing.destroy');
 
+
+Route::middleware(['auth', 'ownership'])->group(function () {
+    Route::get('/minhas-propriedades', [ManageController::class, 'index'])->withoutMiddleware('ownership')->name('listing.manage');
+    Route::get('/minhas-propriedades/alterar/{listing}', [ManageController::class, 'edit'])->name('listing.edit');
+    Route::post('/minhas-propriedades/alterar/{listing}', [ManageController::class, 'update'])->middleware('optimizeImages')->name('listing.update');
+    Route::delete('/minhas-propriedades/remover/{listing}', [ManageController::class, 'destroy'])->name('listing.destroy');
+    Route::delete('/minhas-propriedades/delete-image/{image}', [ManageController::class, 'deleteImage'])->withoutMiddleware('ownership')->name('listing.delete-image');
+});
 
 Route::get('/sobre-nos', function () {
     return Inertia::render('AboutPage', [

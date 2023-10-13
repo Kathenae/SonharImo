@@ -9,9 +9,9 @@ import instagramIconPng from '@assets/instagram_grey.png';
 import facebookIconPng from '@assets/facebook_grey.png';
 import contactPng from '@assets/contact.png';
 
-export default function ContactPage({ auth, laravelVersion, phpVersion }: PageProps<{ laravelVersion: string, phpVersion: string }>) {
+export default function ContactPage({ auth, flash }: PageProps) {
     return (
-        <Layout user={auth.user}>
+        <Layout user={auth.user} flashMessages={flash}>
             <Head title="Contactos" />
 
             <div className="pt-24 px-4 lg:px-24">

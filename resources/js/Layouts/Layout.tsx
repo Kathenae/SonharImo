@@ -1,6 +1,6 @@
 import { useState, PropsWithChildren, ReactNode, useEffect } from 'react';
 import NavLink from '@/Components/NavLink';
-import { User } from '@/types';
+import { FlashMessages, User } from '@/types';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 
 import logoWhitePng from '../../../public/assets/logo-white.png'
@@ -11,16 +11,17 @@ import facebookIconPng from '../../../public/assets/facebook_white.png'
 import PrimaryButton from '@/Components/PrimaryButton';
 import { cn } from '@/utils';
 
-export default function Layout({ user, children }: PropsWithChildren<{ user: User }>) {
+export default function Layout({ user, flashMessages, children }: PropsWithChildren<{ user: User, flashMessages: FlashMessages }>) {
     const [navSticky, setNavSticky] = useState(false)
+    const [flash, setFlash] = useState(flashMessages)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
     useEffect(() => {
-        function handleSticky(){
-            if(window.scrollY >= 80 || !route().current('home-page')){
+        function handleSticky() {
+            if (window.scrollY >= 80 || !route().current('home-page')) {
                 setNavSticky(true)
             }
-            else{
+            else {
                 setNavSticky(false)
             }
         }
@@ -34,14 +35,15 @@ export default function Layout({ user, children }: PropsWithChildren<{ user: Use
     }, [])
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 relative">
             <nav className={`flex items-center w-full px-4 lg:px-24 z-50 transition-transform top-0 h-20 ${navSticky ? 'bg-white border-b border-dark-50 fixed' : 'fixed bg-white lg:absolute lg:bg-transparent border-b border-dark-50 lg:border-none'}`}>
                 <div>
-                    <ApplicationLogo black={navSticky}/>
+                    <ApplicationLogo black={navSticky} />
                 </div>
                 <div className='ml-auto hidden md:flex space-x-4 py-2'>
                     <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('home-page')} active={route().current('home-page')}>Home</NavLink>
                     <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('listing.index')} active={route().current('listing.index')}>Propriedades</NavLink>
+                    <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('listing.manage')} active={route().current('listing.manage')}>Minhas Propriedades</NavLink>
                     <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('listing.create')} active={route().current('listing.create')}>Anuncie</NavLink>
                     <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('about-page')} active={route().current('about-page')}>Sobre-nos</NavLink>
                     <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('contact-page')} active={route().current('contact-page')}>Contactos</NavLink>
@@ -70,6 +72,13 @@ export default function Layout({ user, children }: PropsWithChildren<{ user: Use
                         active={route().current('listing.index')}
                     >
                         Propriedades
+                    </NavLink>
+                    <NavLink
+                        className='block py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-100'
+                        href={route('listing.manage')}
+                        active={route().current('listing.manage')}
+                    >
+                        Minhas Propriedades
                     </NavLink>
                     <NavLink
                         className='block py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-100'
@@ -138,6 +147,36 @@ export default function Layout({ user, children }: PropsWithChildren<{ user: Use
                     </div>
                 </div>
             </footer>
+
+            <div className='fixed bottom-0 right-0 pointer-events-none p-4 space-y-2'>
+                {flash.success &&
+                    <div id='flash_success' className='relative bg-green-400 px-4 py-2 rounded-lg w-[250px] pointer-events-auto fade-out'>
+                        <button className='absolute right-2 top-3' onClick={() => setFlash({...flash, success: undefined})}>
+                            <i className='icon-[lucide--x]' />
+                        </button>
+                        <h2 className='font-bold'>Successo</h2>
+                        <span className='text-green-800'>{flash.success}</span>
+                    </div>
+                }
+                {flash.error &&
+                    <div id='flash_error' className='relative bg-red-400 px-4 py-2 rounded-lg w-[250px] pointer-events-auto'>
+                        <button className='absolute right-2 top-3' onClick={() => setFlash({...flash, error: undefined})}>
+                            <i className='icon-[lucide--x]' />
+                        </button>
+                        <h2 className='font-bold'>Occoreu um erro!</h2>
+                        <span className='text-red-800'>{flash.error}</span>
+                    </div>
+                }
+                {flash.warning &&
+                    <div id='flash_warning' className='relative bg-yellow-400 px-4 py-2 rounded-lg w-[250px] pointer-events-auto'>
+                        <button className='absolute right-2 top-3' onClick={() => setFlash({...flash, warning: undefined})}>
+                            <i className='icon-[lucide--x]' />
+                        </button>
+                        <h2 className='font-bold'>Aviso</h2>
+                        <span className='text-yellow-800'>{flash.success}</span>
+                    </div>
+                }
+            </div>
         </div>
     );
 }

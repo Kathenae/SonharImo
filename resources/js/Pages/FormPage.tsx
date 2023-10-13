@@ -1,43 +1,58 @@
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TextInput from "@/Components/TextInput";
 import Layout from "@/Layouts/Layout";
-import { PageProps } from "@/types";
+import { HouseImage, HouseListing, PageProps } from "@/types";
 import { Head, router, useForm } from "@inertiajs/react";
-import { useRef } from "react";
+import { useState } from "react";
 
 function DefaultFiles(): File[] {
     return []
 }
 
-export default function FormPage({ auth, laravelVersion, phpVersion }: PageProps<{ laravelVersion: string, phpVersion: string }>) {
+function DefaultImages(images?: HouseImage[]): HouseImage[] {
+    if (images) {
+        return [...images]
+    }
+    else {
+        return []
+    }
+}
 
-    const { data, setData, post, processing, progress, errors } = useForm({
+export default function FormPage({ auth, listing, flash }: PageProps<{ listing?: HouseListing }>) {
+
+    const [images, setImages] = useState(DefaultImages(listing?.images))
+
+    const { data, setData, post, put, processing, progress, errors } = useForm({
         'images': DefaultFiles(),
-        'province': '',
-        'city': '',
-        'address': '',
+        'province': listing?.province ?? '',
+        'city': listing?.city ?? '',
+        'address': listing?.address ?? '',
         'property_type': 'tipo_1',
-        'deal_type': 'sale',
-        'price': '',
-        'description': '',
-        'total_bedrooms': '',
-        'total_showers': '',
-        'total_garages': '',
-        'owner_first_name': '',
-        'owner_last_name': '',
-        'owner_phone_number': '',
-        'owner_secondary_phone_number': '',
-        'owner_personal_id_number': '',
-        'owner_address': '',
-        'owner_email_address': '',
+        'deal_type': listing?.deal_type ?? 'sale',
+        'price': listing?.price ?? '',
+        'description': listing?.description ?? '',
+        'total_bedrooms': listing?.total_bedrooms ?? '',
+        'total_showers': listing?.total_showers ?? '',
+        'total_garages': listing?.total_garages ?? '',
+        'owner_first_name': listing?.owner_first_name ?? '',
+        'owner_last_name': listing?.owner_last_name ?? '',
+        'owner_phone_number': listing?.owner_phone_number ?? '',
+        'owner_secondary_phone_number': listing?.owner_secondary_phone_number ?? '',
+        'owner_personal_id_number': listing?.owner_personal_id_number ?? '',
+        'owner_address': listing?.owner_address ?? '',
+        'owner_email_address': listing?.owner_email_address ?? '',
     })
 
     const submit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        post(route('listing.store'))
+        if (listing == null) {
+            post(route('listing.store'))
+        }
+        else {
+            post(route('listing.update', listing.id), { preserveState: false })
+        }
     }
 
     const onImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,18 +70,32 @@ export default function FormPage({ auth, laravelVersion, phpVersion }: PageProps
         setData('images', [...data.images, ...newImages])
     }
 
-    const onImageRemove = (e: React.FormEvent<HTMLButtonElement>, image: File | null) => {
+    const onImageRemove = async (e: React.FormEvent<HTMLButtonElement>, image: File | HouseImage) => {
         e.preventDefault();
-        setData('images', [...data.images.filter(img => img != image)])
+        if (image instanceof File) {
+            setData('images', [...data.images.filter(img => img != image)])
+        }
+        else {
+
+            router.delete(route('listing.delete-image', image.id),
+                {
+                    only: ['listing', 'flash'], preserveScroll: true, preserveState: false,
+                    onSuccess: () => {
+                        setImages(images => images.filter(img => img.id != image.id))
+                    }
+                });
+        }
     }
 
     return (
-        <Layout user={auth.user}>
-            <Head title="Anuncie" />
+        <Layout user={auth.user} flashMessages={flash}>
+            <Head title={listing ? "Alterar" : "Anuncie"} />
 
 
             <form onSubmit={submit} className="pt-24 px-4 lg:px-24" method="post" encType="multipart/form-data">
-                <h1 className="text-gray-900 font-thin text-4xl mb-6 text-center">Anuncie seu imóvel conosco</h1>
+                <h1 className="text-gray-900 font-thin text-4xl mb-6 text-center">
+                    {listing ? "Alterar dados do imovel" : "Crie um novo anuncio"}
+                </h1>
 
                 <div className="w-full flex justify-center">
                     <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 w-full">
@@ -82,7 +111,11 @@ export default function FormPage({ auth, laravelVersion, phpVersion }: PageProps
                                 </div>
                                 <div className="mt-2">
                                     <InputLabel htmlFor="deal_type">Venda/Alugue</InputLabel>
-                                    <SelectInput name="deal_type" className='rounded-md w-full' value={data.deal_type} onChange={(e) => setData('deal_type', e.target.value)}>
+                                    <SelectInput name="deal_type" className='rounded-md w-full' value={data.deal_type} onChange={(e) => {
+                                        if (e.target.value == 'sale' || e.target.value == 'rent') {
+                                            setData('deal_type', e.target.value)
+                                        }
+                                    }}>
                                         <option value={'sale'}>Venda</option>
                                         <option value={'rent'}>Alugue</option>
                                     </SelectInput>
@@ -96,8 +129,8 @@ export default function FormPage({ auth, laravelVersion, phpVersion }: PageProps
                                         <option value={'tipo_2'}>Tipo 2</option>
                                         <option value={'tipo_3'}>Tipo 3</option>
                                         <option value={'tipo_4'}>Tipo 4</option>
-                                        <InputError message={errors.property_type} className="mt-2" />
                                     </SelectInput>
+                                    <InputError message={errors.property_type} className="mt-2" />
                                 </div>
 
                                 <div className="mt-2">
@@ -205,9 +238,9 @@ export default function FormPage({ auth, laravelVersion, phpVersion }: PageProps
                                         <span className="icon-[lucide--plus] text-8xl text-gray-400"></span>
                                         <input id="image_select" type="file" accept="image/" multiple className="hidden" onChange={onImageSelect} />
                                     </label>
-                                    {data.images.filter(img => img != null).map((image) => (
-                                        <div key={image.name} className="relative rounded-lg">
-                                            <img src={image ? URL.createObjectURL(image) : ''} className="h-48 w-48 object-cover rounded-lg" />
+                                    {[...data.images.filter(img => img != null), ...images].map((image) => (
+                                        <div key={image instanceof File ? image.name : image.id} className="relative rounded-lg h-48 w-48">
+                                            <img src={image instanceof File ? URL.createObjectURL(image) : image.url} className="h-48 w-48 object-cover rounded-lg" />
                                             <button type="button" onClick={(e) => onImageRemove(e, image)} className="absolute top-2 right-2 rounded-full bg-white hover:bg-gray-50 h-6 w-6 flex items-center justify-center">
                                                 <span className="icon-[mdi--close]"></span>
                                             </button>
@@ -215,7 +248,7 @@ export default function FormPage({ auth, laravelVersion, phpVersion }: PageProps
                                     ))}
                                 </div>
 
-                                <InputError message={errors.images} className="mt-2"/>
+                                <InputError message={errors.images} className="mt-2" />
 
                                 {/* Show errors for each image */}
                                 {data.images.map((image, index) => (

@@ -14,14 +14,13 @@ import partnerLogo1Jpeg from '@assets/partner_1.jpeg';
 import partnerLogo2Png from '@assets/partner_2.png';
 import partnerLogo3Png from '@assets/partner_3.png';
 
-export default function HomePage({ auth, popularListings }: PageProps<{ popularListings: HouseListing[] }>) {
+export default function HomePage({ auth, popularListings, flash }: PageProps<{ popularListings: HouseListing[] }>) {
 
     const { isAboveMd } = useBreakpoint('md')
     const { isAboveLg } = useBreakpoint('lg')
 
-
     return (
-        <Layout user={auth.user}>
+        <Layout user={auth.user} flashMessages={flash}>
             <Head title="Home" />
 
             <section
