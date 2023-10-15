@@ -27,7 +27,8 @@ class HouseListing extends Model
         'owner_personal_id_number',
         'owner_address',
         'owner_email_address',
-        'user_id'
+        'user_id',
+        'is_highligted'
     ];
 
     public function user() {
@@ -35,7 +36,7 @@ class HouseListing extends Model
     }
 
     public static function mostPopular(){
-        $listings = HouseListing::all()->load('images');
+        $listings = HouseListing::query()->where('is_highlighted', true)->with('images')->get();
         return $listings;
     }
 

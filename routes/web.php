@@ -4,6 +4,7 @@ use App\Http\Controllers\HouseListingController;
 use App\Http\Controllers\ManageController;
 use App\Http\Controllers\ProfileController;
 use App\Models\HouseListing;
+use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -36,7 +37,8 @@ Route::middleware(['auth', 'ownership'])->group(function () {
     Route::get('/minhas-propriedades/alterar/{listing}', [ManageController::class, 'edit'])->name('listing.edit');
     Route::post('/minhas-propriedades/alterar/{listing}', [ManageController::class, 'update'])->middleware('optimizeImages')->name('listing.update');
     Route::delete('/minhas-propriedades/remover/{listing}', [ManageController::class, 'destroy'])->name('listing.destroy');
-    Route::delete('/minhas-propriedades/delete-image/{image}', [ManageController::class, 'deleteImage'])->withoutMiddleware('ownership')->name('listing.delete-image');
+    Route::delete('/minhas-propriedades/remover-image/{image}', [ManageController::class, 'deleteImage'])->withoutMiddleware('ownership')->name('listing.delete-image');
+    Route::patch('/minhas-propriedades/destacar/{listing}', [ManageController::class, 'toggleHighlighted'])->withoutMiddleware('ownership')->name('listing.toggle-highlighted');
 });
 
 Route::get('/sobre-nos', function () {

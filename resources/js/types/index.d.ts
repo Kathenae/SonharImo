@@ -1,6 +1,7 @@
 export interface User {
     id: number;
     name: string;
+    role: "guest" | "moderator" | "admin";
     email: string;
     email_verified_at: string;
 }
@@ -30,6 +31,7 @@ interface HouseListing {
     owner_personal_id_number?: string | null;
     owner_address?: string | null;
     owner_email_address?: string | null;
+    is_highlighted: boolean,
     user_id: number;
     created_at: string;
     updated_at: string;

@@ -3,7 +3,7 @@ import Filters from "@/Components/Filters";
 import PrimaryButton from "@/Components/PrimaryButton";
 import Layout from "@/Layouts/Layout";
 import { HouseListing, PageProps } from "@/types";
-import { format_currency } from "@/utils";
+import { cn, format_currency } from "@/utils";
 import { Head, router } from "@inertiajs/react";
 
 export default function ManagePage({ auth, listings, flash }: PageProps<{ listings: HouseListing[] }>) {
@@ -65,8 +65,11 @@ export default function ManagePage({ auth, listings, flash }: PageProps<{ listin
                                     </div>
                                 </div>
 
-                                <div className="px-4 py-4 space-x-4">
+                                <div className="px-4 py-4 space-y-2 flex flex-col">
                                     <PrimaryButton onClick={() => router.visit(route('listing.edit', listing.id))}>Alterar</PrimaryButton>
+                                    {auth.user.role != 'guest' &&
+                                        < PrimaryButton onClick={() => router.patch(route('listing.toggle-highlighted', listing.id), {}, {only: ['listings'], preserveScroll: true})}>{!listing.is_highlighted ? 'Destacar' : 'Remover Destaque'}</PrimaryButton>
+                                    }
                                     <DangerButton onClick={() => router.delete(route('listing.destroy', listing.id))}>Eliminar</DangerButton>
                                 </div>
                             </div>

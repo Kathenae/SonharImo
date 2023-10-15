@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\HouseImage;
 use App\Models\HouseListing;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -167,5 +168,22 @@ class ManageController extends Controller
         }
 
         return back()->with('flash.success', 'Imagem foi apagada');
+    }
+
+    /**
+     * set the specified house
+     */
+    public function toggleHighlighted(Request $request, HouseListing $listing)
+    {
+        $userRole = $request->user()->role;
+        if($userRole != User::ADMIN_ROLE && $userRole != User::MODERATOR_ROLE){
+            return abort(403, 'Unauthorized');
+        }
+
+        $listing->is_highlighted = !$listing->is_highlighted;
+        $listing->save();
+        $flash_message = $listing->is_highlighted? "Anuncio addicionada a secção de destaques" : "Anuncio removido da secção de destaques";
+
+        return back()->with('flash.success', $flash_message);
     }
 }
