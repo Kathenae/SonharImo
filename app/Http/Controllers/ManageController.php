@@ -66,7 +66,12 @@ class ManageController extends Controller
             }
         }
 
-        $listings = $query->where('user_id', $request->user()->id)->with('images')->get();
+        $userRole = $request->user()->role;
+        if($userRole != User::ADMIN_ROLE && $userRole != User::MODERATOR_ROLE){
+            $query->where('user_id', $request->user()->id);
+        }
+
+        $listings = $query->with('images')->get();
 
         return Inertia::render('ManagePage', [
             'listings' => $listings

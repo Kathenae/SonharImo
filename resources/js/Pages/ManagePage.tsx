@@ -12,7 +12,7 @@ export default function ManagePage({ auth, listings, flash }: PageProps<{ listin
             <Head title="Home" />
 
             <div className="px-4 lg:px-24 pt-24">
-                <h1 className='text-6xl font-extrabold text-gray-800'>Meus Imóveis</h1>
+                <h1 className='text-6xl font-extrabold text-gray-800'>{auth.user.role != 'guest' ? 'Gerir' : 'Meus Imóveis'}</h1>
                 <PrimaryButton onClick={() => router.visit(route('listing.create'))} className="mt-4 bg-orange-500 hover:!bg-orange-600 active:!bg-orange-600">Novo Imóvel</PrimaryButton>
             </div>
 

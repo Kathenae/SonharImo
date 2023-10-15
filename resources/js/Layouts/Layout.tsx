@@ -40,13 +40,21 @@ export default function Layout({ user, flashMessages, children }: PropsWithChild
                 <div>
                     <ApplicationLogo black={navSticky} />
                 </div>
-                <div className='ml-auto hidden md:flex space-x-4 py-2'>
+                <div className='ml-auto hidden md:flex space-x-2 py-2'>
                     <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('home-page')} active={route().current('home-page')}>Home</NavLink>
-                    <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('listing.index')} active={route().current('listing.index')}>Propriedades</NavLink>
-                    <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('listing.manage')} active={route().current('listing.manage')}>Minhas Propriedades</NavLink>
+                    <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('listing.index')} active={route().current('listing.index')}>Procurar Imóveis</NavLink>
+                    {user &&
+                        <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('listing.manage')} active={route().current('listing.manage')}>{user.role != 'guest' ? 'Gerir Propriedades' : 'Minhas Propriedades'}</NavLink>
+                    }
                     <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('listing.create')} active={route().current('listing.create')}>Anuncie</NavLink>
                     <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('about-page')} active={route().current('about-page')}>Sobre-nos</NavLink>
                     <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('contact-page')} active={route().current('contact-page')}>Contactos</NavLink>
+                    {!user &&
+                        <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('login')} active={route().current('login')}>Entrar</NavLink>
+                    }
+                    {user &&
+                        <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} method='post' href={route('logout')} active={route().current('logout')}>Sair</NavLink>
+                    }
                 </div>
                 <div className='ml-auto md:hidden'>
                     <PrimaryButton className='!bg-white' onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
@@ -57,7 +65,7 @@ export default function Layout({ user, flashMessages, children }: PropsWithChild
                 {/* Mobile Menu */}
                 <div className={cn(
                     'md:hidden absolute w-full flex flex-col bg-white rounded-b-xl left-0 px-4 h-0 overflow-hidden transition-all top-20 text-lg shadow-lg',
-                    mobileMenuOpen && 'h-48'
+                    mobileMenuOpen && 'h-58'
                 )}>
                     <NavLink
                         className='block py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-100'
@@ -71,15 +79,18 @@ export default function Layout({ user, flashMessages, children }: PropsWithChild
                         href={route('listing.index')}
                         active={route().current('listing.index')}
                     >
-                        Propriedades
+                        Procurar Imóveis
                     </NavLink>
-                    <NavLink
-                        className='block py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-100'
-                        href={route('listing.manage')}
-                        active={route().current('listing.manage')}
-                    >
-                        Minhas Propriedades
-                    </NavLink>
+                    {user &&
+
+                        <NavLink
+                            className='block py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-100'
+                            href={route('listing.manage')}
+                            active={route().current('listing.manage')}
+                        >
+                            {user.role != 'guest' ? 'Gerir Propriedades' : 'Minhas Propriedades'}
+                        </NavLink>
+                    }
                     <NavLink
                         className='block py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-100'
                         href={route('listing.create')}
@@ -101,6 +112,27 @@ export default function Layout({ user, flashMessages, children }: PropsWithChild
                     >
                         Contactos
                     </NavLink>
+                    {!user &&
+                        <NavLink
+                            className='block py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-100'
+                            href={route('login')}
+                            active={route().current('login')}
+                        >
+                            Entrar
+                        </NavLink>
+                    }
+
+                    {user &&
+                        <NavLink
+                            className='block py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-100'
+                            href={route('logout')}
+                            method='post'
+                            active={route().current('logout')}
+                        >
+                            Sair
+                        </NavLink>
+                    }
+
                 </div>
             </nav>
 
@@ -114,10 +146,10 @@ export default function Layout({ user, flashMessages, children }: PropsWithChild
                             <span className='mt-4'>Copyrights 2023</span>
                         </div>
                         <div className='flex flex-col space-y-2'>
-                            <a href="">Propriedades</a>
-                            <a href="">Anuncie</a>
-                            <a href="">Sobre-nos</a>
-                            <a href="">Contactos</a>
+                            <a href={route('listing.index')}>Propriedades</a>
+                            <a href={route('listing.create')}>Anuncie</a>
+                            <a href={route('about-page')}>Sobre-nos</a>
+                            <a href={route('contact-page')}>Contactos</a>
                         </div>
                         <div className='flex flex-col space-y-2'>
                             <div className='flex items-center space-x-2'>
@@ -151,7 +183,7 @@ export default function Layout({ user, flashMessages, children }: PropsWithChild
             <div className='fixed bottom-0 right-0 pointer-events-none p-4 space-y-2'>
                 {flash.success &&
                     <div id='flash_success' className='relative bg-green-400 px-4 py-2 rounded-lg w-[250px] pointer-events-auto fade-out'>
-                        <button className='absolute right-2 top-3' onClick={() => setFlash({...flash, success: undefined})}>
+                        <button className='absolute right-2 top-3' onClick={() => setFlash({ ...flash, success: undefined })}>
                             <i className='icon-[lucide--x]' />
                         </button>
                         <h2 className='font-bold'>Successo</h2>
@@ -160,7 +192,7 @@ export default function Layout({ user, flashMessages, children }: PropsWithChild
                 }
                 {flash.error &&
                     <div id='flash_error' className='relative bg-red-400 px-4 py-2 rounded-lg w-[250px] pointer-events-auto'>
-                        <button className='absolute right-2 top-3' onClick={() => setFlash({...flash, error: undefined})}>
+                        <button className='absolute right-2 top-3' onClick={() => setFlash({ ...flash, error: undefined })}>
                             <i className='icon-[lucide--x]' />
                         </button>
                         <h2 className='font-bold'>Occoreu um erro!</h2>
@@ -169,7 +201,7 @@ export default function Layout({ user, flashMessages, children }: PropsWithChild
                 }
                 {flash.warning &&
                     <div id='flash_warning' className='relative bg-yellow-400 px-4 py-2 rounded-lg w-[250px] pointer-events-auto'>
-                        <button className='absolute right-2 top-3' onClick={() => setFlash({...flash, warning: undefined})}>
+                        <button className='absolute right-2 top-3' onClick={() => setFlash({ ...flash, warning: undefined })}>
                             <i className='icon-[lucide--x]' />
                         </button>
                         <h2 className='font-bold'>Aviso</h2>
