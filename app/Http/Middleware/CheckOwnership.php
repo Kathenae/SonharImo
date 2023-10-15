@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\HouseListing;
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +21,7 @@ class CheckOwnership
         $user = $request->user();
 
         // Check if the authenticated user owns the listing
-        if ($user->id !== $listing->user_id) {
+        if ($user->id !== $listing->user_id && $user->role == User::GUEST_ROLE) {
             return abort(403, 'Unauthorized');
         }
 
