@@ -87,7 +87,7 @@ class HouseListingController extends Controller
     {
         $request->validate([
             'images' => 'array|min:1',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:20720',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'province' => 'required|string',
             'city' => 'required|string',
             'address' => 'required|string',
