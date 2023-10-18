@@ -70,6 +70,17 @@ export default function HomePage({ auth, popularListings, flash }: PageProps<{ p
                 </div>
             </section>
 
+            {popularListings.length > 0 &&
+                <section className='px-4 lg:px-24 mt-28'>
+                    <h1 className='text-4xl md:text-6xl text-center font-extrabold text-gray-800'>Em Destaque</h1>
+                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mt-12'>
+                        {popularListings.slice(0, 6).map((listing) => (
+                            <HouseCard key={listing.id} listing={listing} />
+                        ))}
+                    </div>
+                </section>
+            }
+
             <section className='px-4 lg:px-24 mt-28'>
                 <h1 className='text-4xl md:text-6xl text-center font-extrabold text-gray-800'>Nossos Parceiros!</h1>
                 <div className='flex items-center flex-col lg:flex-row justify-center space-y-4 lg:space-y-0 lg:space-x-16 mt-12 w-full'>
@@ -84,17 +95,6 @@ export default function HomePage({ auth, popularListings, flash }: PageProps<{ p
                     </div>
                 </div>
             </section>
-
-            {popularListings.length > 0 &&
-                <section className='px-4 lg:px-24 mt-28'>
-                    <h1 className='text-4xl md:text-6xl text-center font-extrabold text-gray-800'>Em Destaque</h1>
-                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mt-12'>
-                        {popularListings.slice(0, 6).map((listing) => (
-                            <HouseCard key={listing.id} listing={listing} />
-                        ))}
-                    </div>
-                </section>
-            }
         </Layout>
     );
 }
