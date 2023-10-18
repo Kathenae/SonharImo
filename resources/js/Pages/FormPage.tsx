@@ -26,7 +26,7 @@ export default function FormPage({ auth, listing, flash }: PageProps<{ listing?:
 
     const { data, setData, post, put, processing, progress, errors } = useForm({
         'images': DefaultFiles(),
-        'province': listing?.province ?? '',
+        'province': listing?.province ?? 'maputo',
         'city': listing?.city ?? '',
         'address': listing?.address ?? '',
         'property_type': 'tipo_1',
@@ -155,7 +155,17 @@ export default function FormPage({ auth, listing, flash }: PageProps<{ listing?:
                             <div className="grid grid-cols-1 gap-4">
                                 <div className="mt-2">
                                     <InputLabel htmlFor="province">Provincia</InputLabel>
-                                    <TextInput name="listing_province" type="text" className='rounded-md w-full' value={data.province} onChange={(e) => setData('province', e.target.value)} />
+                                    <SelectInput name="province" className="shadow-md w-full" value={data.province} onChange={(e) => setData('province', e.target.value)}  >
+                                        <option value="maputo">Maputo</option>
+                                        <option value="tete">Tete</option>
+                                        <option value="inhambane">Inhambane</option>
+                                        <option value="quelimane">Quelimane</option>
+                                        <option value="cabo delgado">Cabo Delgado</option>
+                                        <option value="gaza">Gaza</option>
+                                        <option value="nampula">Nampula</option>
+                                        <option value="sofala">Sofala</option>
+                                        <option value="zambezia">Zambezia</option>
+                                    </SelectInput>
                                     <InputError message={errors.province} className="mt-2" />
                                 </div>
 
