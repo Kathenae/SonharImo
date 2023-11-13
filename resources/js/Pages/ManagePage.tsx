@@ -6,13 +6,19 @@ import { HouseListing, PageProps } from "@/types";
 import { cn, format_currency } from "@/utils";
 import { Head, router } from "@inertiajs/react";
 
-export default function ManagePage({ auth, listings, flash }: PageProps<{ listings: HouseListing[] }>) {
+export default function ManagePage(props: PageProps<{ listings: HouseListing[] }>) {
+
+    const { listings } = props
+    const handleDelete = (listing: HouseListing) => {
+        router.delete(route('listing.destroy'), { data: { listings: [listing.id] } })
+    }
+
     return (
-        <Layout user={auth.user} flashMessages={flash}>
+        <Layout {...props}>
             <Head title="Home" />
 
             <div className="px-4 lg:px-24 pt-24">
-                <h1 className='text-6xl font-extrabold text-gray-800'>{auth.user.role != 'guest' ? 'Gerir' : 'Meus Imóveis'}</h1>
+                <h1 className='text-6xl font-extrabold text-gray-800'>{'Gerir Imóveis'}</h1>
                 <PrimaryButton onClick={() => router.visit(route('listing.create'))} className="mt-4 bg-orange-500 hover:!bg-orange-600 active:!bg-orange-600">Novo Imóvel</PrimaryButton>
             </div>
 
@@ -35,9 +41,12 @@ export default function ManagePage({ auth, listings, flash }: PageProps<{ listin
                                     </div>
                                 </div>
 
-                                <div className="px-6 mt-4 text-2xl font-bold">
+                                <div className="px-6 mt-4 flex justify-between items-center text-2xl font-bold">
                                     {/* <span className="text-orange-500 ">Preço: </span> */}
                                     <span className="text-gray-800">{format_currency(listing.price, 'MZN')}</span>
+                                    {!listing.is_approved &&
+                                        <span className="text-sm text-red-600">Esperando aprovação</span>
+                                    }
                                 </div>
 
                                 <div className="flex space-x-4 mx-4 py-4">
@@ -51,7 +60,7 @@ export default function ManagePage({ auth, listings, flash }: PageProps<{ listin
                                     </div>
                                     <div className="flex items-center space-x-2">
                                         <img src="/assets/garage.png" width="38" />
-                                        <span className="text-xl font-semibold">{listing.total_garages}</span>
+                                        <span className="text-xl font-semibold">{listing.total_parking_spaces}</span>
                                     </div>
                                     <div className="flex items-center space-x-2">
                                         <img src="/assets/squarefoot.png" width="38" />
@@ -67,10 +76,7 @@ export default function ManagePage({ auth, listings, flash }: PageProps<{ listin
 
                                 <div className="px-4 py-4 space-y-2 flex flex-col">
                                     <PrimaryButton onClick={() => router.visit(route('listing.edit', listing.id))}>Alterar</PrimaryButton>
-                                    {auth.user.role != 'guest' &&
-                                        < PrimaryButton onClick={() => router.patch(route('listing.toggle-highlighted', listing.id), {}, {only: ['listings'], preserveScroll: true})}>{!listing.is_highlighted ? 'Destacar' : 'Remover Destaque'}</PrimaryButton>
-                                    }
-                                    <DangerButton onClick={() => router.delete(route('listing.destroy', listing.id))}>Eliminar</DangerButton>
+                                    <DangerButton onClick={() => handleDelete(listing)}>Eliminar</DangerButton>
                                 </div>
                             </div>
                         ))}

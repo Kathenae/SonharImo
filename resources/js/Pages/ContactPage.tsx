@@ -9,9 +9,10 @@ import instagramIconPng from '@assets/instagram_grey.png';
 import facebookIconPng from '@assets/facebook_grey.png';
 import contactPng from '@assets/contact.png';
 
-export default function ContactPage({ auth, flash }: PageProps) {
+export default function ContactPage(props: PageProps) {
+    const { site_contacts } = props
     return (
-        <Layout user={auth.user} flashMessages={flash}>
+        <Layout {...props}>
             <Head title="Contactos" />
 
             <div className="pt-24 px-4 lg:px-24">
@@ -19,19 +20,19 @@ export default function ContactPage({ auth, flash }: PageProps) {
                 <div className='flex flex-col space-y-4 text-4xl mt-8 pl-8'>
                     <div className='flex items-center space-x-2'>
                         <img width="32" src={phoneIconPng} />
-                        <a href="">Telefone</a>
+                        <a href={`tel:${site_contacts?.phone_number}`} target="_blank">Telefone</a>
                     </div>
                     <div className='flex items-center space-x-2'>
                         <img width="32" src={whatsappIconPng} />
-                        <a href="">Whatsapp</a>
+                        <a href={site_contacts?.whatsapp_link} target="_blank">Whatsapp</a>
                     </div>
                     <div className='flex items-center space-x-2'>
                         <img width="32" src={instagramIconPng} />
-                        <a href="">Instagram</a>
+                        <a href={site_contacts?.instagram_link} target="_blank">Instagram</a>
                     </div>
                     <div className='flex items-center space-x-2'>
                         <img width="32" src={facebookIconPng} />
-                        <a href="">Facebook</a>
+                        <a href={site_contacts?.facebook_link} target="_blank">Facebook</a>
                     </div>
                 </div>
                 <div className="mt-12">

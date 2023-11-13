@@ -1,6 +1,6 @@
 import Layout from "@/Layouts/Layout";
 import { HouseListing, PageProps } from "@/types";
-import { cn, format_currency, lerp } from "@/utils";
+import { cn, format_currency, lerp, translate } from "@/utils";
 import { Head } from "@inertiajs/react";
 
 // assets
@@ -11,11 +11,13 @@ import squarefootageIconPng from '@assets/squarefoot.png';
 import phoneIconPng from '@assets/phone-call-white.png';
 import whatsappIconPng from '@assets/whatsapp_white.png';
 import ImageGallery from "@/Components/ImageGallery";
+import { ProvinceChoices } from "@/choices";
 
-export default function DetailsPage({ listing, auth, flash }: PageProps<{ listing: HouseListing }>) {
+export default function DetailsPage(props: PageProps<{ listing: HouseListing }>) {
+    const { listing } = props
 
     return (
-        <Layout user={auth.user} flashMessages={flash}>
+        <Layout {...props}>
             <Head title="Home" />
 
             <div className="px-4 lg:px-24 pt-24">
@@ -38,12 +40,12 @@ export default function DetailsPage({ listing, auth, flash }: PageProps<{ listin
                             </div>
                             <div className="flex items-center space-x-2">
                                 <img src={garageIconPng} className="w-6 lg:w-8"/>
-                                <span className="text-xl font-semibold">{listing.total_garages}</span>
+                                <span className="text-xl font-semibold">{listing.total_parking_spaces}</span>
                             </div>
                             <div className="flex items-center space-x-2">
                                 <img src={squarefootageIconPng} className="w-6 lg:w-8"/>
-                                <span className="text-xl font-semibold">
-                                    {400}
+                                <span className="text-xl space-x-1 font-semibold">
+                                    <span>{listing.plot_square_footage}</span>
                                     <span className="relative text-base">
                                         m
                                         <span className="absolute top-0 text-xs">2</span>
@@ -53,8 +55,23 @@ export default function DetailsPage({ listing, auth, flash }: PageProps<{ listin
                         </div>
 
                         <div className="mt-4">
-                            <h3 className="text-orange-500 font-bold text-2xl">Descrição</h3>
-                            <p className="pl-2 mt-2">{listing.description}</p>
+                            <h3 className="text-orange-500 font-bold text-2xl">Detalhes</h3>
+                            <p className="space-x-2 mt-4">
+                                <b>Contacto:</b>
+                                <a className="text-orange-500 font-medium underline" href={`tel:${listing.owner_phone_number}`}>{listing.owner_phone_number}</a>
+                            </p>
+                            <p className="space-x-2">
+                                <b>Localização:</b>
+                                <a className="" href={`tel:${listing.address}`}>{listing.address}, {listing.city}, {ProvinceChoices[listing.province as keyof typeof ProvinceChoices]}</a>
+                            </p>
+                            <p className="space-x-2">
+                                <b>Facilidade de pagamento:</b>
+                                <span>{translate(listing.include_convenience)}</span>
+                            </p>
+                            <p className="space-x-2">
+                                <b>Responsabilidade de negociação:</b>
+                                <span>{translate(listing.negotiation_type)}</span>
+                            </p>
                         </div>
 
                         <div className="mt-4 lg:mt-auto">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\SiteContact;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -30,6 +31,8 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $site_contacts = SiteContact::query()->where('id', 1)->first();
+
         return [
             ...parent::share($request),
             'auth' => [
@@ -39,6 +42,7 @@ class HandleInertiaRequests extends Middleware
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
+            'site_contacts' => $site_contacts,
             'flash' => [
                 'success' => fn() => $request->session()->get('flash.success'),
                 'error' => fn() => $request->session()->get('flash.error'),

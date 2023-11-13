@@ -80,7 +80,7 @@ return [
     'mac_address'          => 'Este Campo deve ser um endereço MAC válido.',
     'max'                  => [
         'array'   => 'Este Campo não deverá conter mais de :max elementos.',
-        'file'    => 'Este Campo não deverá ter um tamanho superior a :max kilobytes.',
+        'file'    => 'Este Campo (:attribute) não deverá ter um tamanho superior a :max kilobytes.',
         'numeric' => 'Este Campo não deverá conter um valor superior a :max.',
         'string'  => 'Este Campo não deverá conter mais de :max caracteres.',
     ],

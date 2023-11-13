@@ -15,7 +15,7 @@ export default function HouseCard({ listing }: HouseCardProps) {
                 </div>
                 <div className="px-6 mt-6">
                     <div className="overflow-hidden h-[214px]">
-                        <img src={listing.images[0].url ?? "/assets/house-default.jpg"} className="w-full" />
+                        <img src={listing?.images[0]?.url ?? "/assets/house-default.jpg"} className="w-full" />
                     </div>
                 </div>
 
@@ -35,12 +35,12 @@ export default function HouseCard({ listing }: HouseCardProps) {
                     </div>
                     <div className="flex items-center space-x-2">
                         <img src="/assets/garage.png" width="38"/>
-                        <span className="text-xl font-semibold">{listing.total_garages}</span>
+                        <span className="text-xl font-semibold">{listing.total_parking_spaces}</span>
                     </div>
                     <div className="flex items-center space-x-2">
                         <img src="/assets/squarefoot.png" width="38"/>
-                        <span className="text-xl font-semibold">
-                            {400}
+                        <span className="text-xl space-x-1 font-semibold">
+                            <span>{listing.plot_square_footage}</span>
                             <span className="relative text-base">
                                 m
                                 <span className="absolute top-0 text-xs">2</span>

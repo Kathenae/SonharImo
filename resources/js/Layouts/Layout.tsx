@@ -1,6 +1,6 @@
 import { useState, PropsWithChildren, ReactNode, useEffect } from 'react';
 import NavLink from '@/Components/NavLink';
-import { FlashMessages, User } from '@/types';
+import { Flash, PageProps, SiteContacts, User } from '@/types';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 
 import logoWhitePng from '../../../public/assets/logo-white.png'
@@ -10,15 +10,16 @@ import instagramIconPng from '../../../public/assets/instagram_white.png'
 import facebookIconPng from '../../../public/assets/facebook_white.png'
 import PrimaryButton from '@/Components/PrimaryButton';
 import { cn } from '@/utils';
+import { Link } from '@inertiajs/react';
+import FlashMessages from '@/Components/FlashMessages';
 
-export default function Layout({ user, flashMessages, children }: PropsWithChildren<{ user: User, flashMessages: FlashMessages }>) {
+export default function Layout({ auth, flash, site_contacts, children }: PropsWithChildren<PageProps>) {
     const [navSticky, setNavSticky] = useState(false)
-    const [flash, setFlash] = useState(flashMessages)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
     useEffect(() => {
         function handleSticky() {
-            if (window.scrollY >= 80 || !route().current('home-page')) {
+            if (window.scrollY >= 80 || !route().current('site.home')) {
                 setNavSticky(true)
             }
             else {
@@ -41,21 +42,73 @@ export default function Layout({ user, flashMessages, children }: PropsWithChild
                     <ApplicationLogo black={navSticky} />
                 </div>
                 <div className='ml-auto hidden md:flex space-x-2 py-2'>
-                    <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('home-page')} active={route().current('home-page')}>Home</NavLink>
-                    <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('listing.index')} active={route().current('listing.index')}>Procurar Imóveis</NavLink>
-                    {user &&
-                        <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('listing.manage')} active={route().current('listing.manage')}>{user.role != 'guest' ? 'Gerir Propriedades' : 'Minhas Propriedades'}</NavLink>
+                    <NavLink
+                        className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''}
+                        routeName='site.home'
+                    >
+                        Home
+                    </NavLink>
+                    <NavLink
+                        className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''}
+                        routeName='listing.index'
+                    >
+                        Procurar Imóveis
+                    </NavLink>
+                    {auth.user && auth.user.role == 'guest' &&
+                        <NavLink
+                            className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''}
+                            routeName='listing.manage'
+                        >
+                            Gerir Imóveis
+                        </NavLink>
                     }
-                    <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('listing.create')} active={route().current('listing.create')}>Anuncie</NavLink>
-                    <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('about-page')} active={route().current('about-page')}>Sobre-nos</NavLink>
-                    <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('contact-page')} active={route().current('contact-page')}>Contactos</NavLink>
-                    {!user &&
-                        <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} href={route('login')} active={route().current('login')}>Entrar</NavLink>
+                    {auth.user && auth.user.role == 'admin' &&
+                        <NavLink
+                            className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''}
+                            routeName='admin.dashboard'
+                            routeMatch='admin.*'
+                        >
+                            Administração
+                        </NavLink>
                     }
-                    {user &&
-                        <NavLink className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''} method='post' href={route('logout')} active={route().current('logout')}>Sair</NavLink>
+                    <NavLink
+                        className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''}
+                        routeName='listing.create'
+                    >
+                        Anuncie
+                    </NavLink>
+                    <NavLink
+                        className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''}
+                        routeName='site.about'
+                    >
+                        Sobre-nos
+                    </NavLink>
+                    <NavLink
+                        className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''}
+                        routeName='site.contact'
+                    >
+                        Contactos
+                    </NavLink>
+
+                    {!auth.user &&
+                        <NavLink
+                            className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''}
+                            routeName='login'
+                        >
+                            Entrar
+                        </NavLink>
+                    }
+                    {auth.user &&
+                        <NavLink
+                            className={!navSticky ? ' lg:text-white lg:!font-extrabold ' : ''}
+                            method='post'
+                            routeName='logout'
+                        >
+                            Sair
+                        </NavLink>
                     }
                 </div>
+
                 <div className='ml-auto md:hidden'>
                     <PrimaryButton className='!bg-white' onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
                         <span className='icon-[lucide--menu] text-black text-2xl' />
@@ -67,72 +120,40 @@ export default function Layout({ user, flashMessages, children }: PropsWithChild
                     'md:hidden absolute w-full flex flex-col bg-white rounded-b-xl left-0 px-4 h-0 overflow-hidden transition-all top-20 text-lg shadow-lg',
                     mobileMenuOpen && 'h-58'
                 )}>
-                    <NavLink
-                        className='block py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-100'
-                        href={route('home-page')}
-                        active={route().current('home-page')}
-                    >
+                    <NavLink mobile routeName='site.home'>
                         Home
                     </NavLink>
-                    <NavLink
-                        className='block py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-100'
-                        href={route('listing.index')}
-                        active={route().current('listing.index')}
-                    >
+                    <NavLink mobile routeName='listing.index'>
                         Procurar Imóveis
                     </NavLink>
-                    {user &&
-
-                        <NavLink
-                            className='block py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-100'
-                            href={route('listing.manage')}
-                            active={route().current('listing.manage')}
-                        >
-                            {user.role != 'guest' ? 'Gerir Propriedades' : 'Minhas Propriedades'}
+                    {auth.user && auth.user.role == 'guest' &&
+                        <NavLink mobile routeName='listing.manage' >
+                            Meus Imóveis
                         </NavLink>
                     }
-                    <NavLink
-                        className='block py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-100'
-                        href={route('listing.create')}
-                        active={route().current('listing.create')}
-                    >
+                    {auth.user && auth.user.role == 'admin' &&
+                        <NavLink mobile routeName='admin.dashboard' routeMatch='admin.*' >
+                            Administração
+                        </NavLink>
+                    }
+                    <NavLink mobile routeName='listing.create'>
                         Anuncie
                     </NavLink>
-                    <NavLink
-                        className='block py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-100'
-                        href={route('about-page')}
-                        active={route().current('about-page')}
-                    >
+                    <NavLink mobile routeName='site.about'>
                         Sobre-nos
                     </NavLink>
-                    <NavLink
-                        className='block py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-100'
-                        href={route('contact-page')}
-                        active={route().current('contact-page')}
-                    >
+                    <NavLink mobile routeName='site.contact'>
                         Contactos
                     </NavLink>
-                    {!user &&
-                        <NavLink
-                            className='block py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-100'
-                            href={route('login')}
-                            active={route().current('login')}
-                        >
+                    {!auth.user ?
+                        <NavLink mobile routeName='login'>
                             Entrar
                         </NavLink>
-                    }
-
-                    {user &&
-                        <NavLink
-                            className='block py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-100'
-                            href={route('logout')}
-                            method='post'
-                            active={route().current('logout')}
-                        >
+                        :
+                        <NavLink mobile routeName='logout'>
                             Sair
                         </NavLink>
                     }
-
                 </div>
             </nav>
 
@@ -144,29 +165,33 @@ export default function Layout({ user, flashMessages, children }: PropsWithChild
                         <div className='flex flex-col space-y-2'>
                             <img src={logoWhitePng} width="128" />
                             <span className='mt-4'>Copyrights 2023</span>
+                            <div className='space-x-2'>
+                                <Link className='underline' href={route('site.terms')}><small>Termos de uso</small></Link>
+                                <Link className='underline' href={route('site.privacy')}><small>Politicas de Privacidade</small></Link>
+                            </div>
                         </div>
                         <div className='flex flex-col space-y-2'>
                             <a href={route('listing.index')}>Propriedades</a>
                             <a href={route('listing.create')}>Anuncie</a>
-                            <a href={route('about-page')}>Sobre-nos</a>
-                            <a href={route('contact-page')}>Contactos</a>
+                            <a href={route('site.about')}>Sobre-nos</a>
+                            <a href={route('site.contact')}>Contactos</a>
                         </div>
                         <div className='flex flex-col space-y-2'>
                             <div className='flex items-center space-x-2'>
                                 <img width="18" src={phoneIconPng} />
-                                <a href="">Telefone</a>
+                                <a href={`tel:${site_contacts?.phone_number}`}>Telefone</a>
                             </div>
                             <div className='flex items-center space-x-2'>
                                 <img width="18" src={whatsappIconPng} />
-                                <a href="">Whatsapp</a>
+                                <a href={site_contacts?.whatsapp_link}>Whatsapp</a>
                             </div>
                             <div className='flex items-center space-x-2'>
                                 <img width="18" src={instagramIconPng} />
-                                <a href="">Instagram</a>
+                                <a href={site_contacts?.instagram_link}>Instagram</a>
                             </div>
                             <div className='flex items-center space-x-2'>
                                 <img width="18" src={facebookIconPng} />
-                                <a href="">Facebook</a>
+                                <a href={site_contacts?.facebook_link}>Facebook</a>
                             </div>
                         </div>
                         <div>
@@ -179,36 +204,7 @@ export default function Layout({ user, flashMessages, children }: PropsWithChild
                     </div>
                 </div>
             </footer>
-
-            <div className='fixed bottom-0 right-0 pointer-events-none p-4 space-y-2'>
-                {flash.success &&
-                    <div id='flash_success' className='relative bg-green-400 px-4 py-2 rounded-lg w-[250px] pointer-events-auto fade-out'>
-                        <button className='absolute right-2 top-3' onClick={() => setFlash({ ...flash, success: undefined })}>
-                            <i className='icon-[lucide--x]' />
-                        </button>
-                        <h2 className='font-bold'>Successo</h2>
-                        <span className='text-green-800'>{flash.success}</span>
-                    </div>
-                }
-                {flash.error &&
-                    <div id='flash_error' className='relative bg-red-400 px-4 py-2 rounded-lg w-[250px] pointer-events-auto'>
-                        <button className='absolute right-2 top-3' onClick={() => setFlash({ ...flash, error: undefined })}>
-                            <i className='icon-[lucide--x]' />
-                        </button>
-                        <h2 className='font-bold'>Occoreu um erro!</h2>
-                        <span className='text-red-800'>{flash.error}</span>
-                    </div>
-                }
-                {flash.warning &&
-                    <div id='flash_warning' className='relative bg-yellow-400 px-4 py-2 rounded-lg w-[250px] pointer-events-auto'>
-                        <button className='absolute right-2 top-3' onClick={() => setFlash({ ...flash, warning: undefined })}>
-                            <i className='icon-[lucide--x]' />
-                        </button>
-                        <h2 className='font-bold'>Aviso</h2>
-                        <span className='text-yellow-800'>{flash.success}</span>
-                    </div>
-                }
-            </div>
+            <FlashMessages messages={flash}/>
         </div>
     );
 }

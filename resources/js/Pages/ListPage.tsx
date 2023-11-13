@@ -4,10 +4,11 @@ import Layout from "@/Layouts/Layout";
 import { HouseListing, PageProps } from "@/types";
 import { Head } from "@inertiajs/react";
 
-export default function ListPage({ auth, listings, flash }: PageProps<{ listings: HouseListing[] }>){
+export default function ListPage(props: PageProps<{ listings: HouseListing[] }>){
+    const { listings} = props
 
     return (
-        <Layout user={auth.user} flashMessages={flash}>
+        <Layout {...props}>
             <Head title="Home" />
 
             <div className="px-4 lg:px-24 pt-24">

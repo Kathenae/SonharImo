@@ -5,12 +5,10 @@ import UpdateProfileInformationForm from './Partials/UpdateProfileInformationFor
 import { Head } from '@inertiajs/react';
 import { PageProps } from '@/types';
 
-export default function Edit({ auth, mustVerifyEmail, flash, status }: PageProps<{ mustVerifyEmail: boolean, status?: string }>) {
+export default function Edit(props: PageProps<{ mustVerifyEmail: boolean, status?: string }>) {
+    const { mustVerifyEmail, status } = props
     return (
-        <AuthenticatedLayout
-            user={auth.user}
-            flashMessages={flash}
-        >
+        <AuthenticatedLayout {...props}>
             <Head title="Profile" />
 
             <div className="py-12">

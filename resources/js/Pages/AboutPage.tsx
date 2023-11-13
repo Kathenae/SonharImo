@@ -4,14 +4,14 @@ import { Head } from "@inertiajs/react";
 
 import aboutPng from '../../../public/assets/about.png'
 
-export default function AboutPage({ auth, flash }: PageProps) {
+export default function AboutPage(props: PageProps) {
     return (
-        <Layout user={auth.user} flashMessages={flash}>
+        <Layout {...props}>
             <Head title="Sobre-nos" />
 
             <div className="pt-24 px-4 lg:px-24 text-2xl">
                 <div className="w-full lg:w-[700px] p-4">
-                    <p><span className="font-bold text-3xl">Nós Somos</span> uma companhia do ramo imobiliário, mais especificamente no segmento de construção, venda e/ou aluguel de imóveis residenciais e comerciais</p>
+                    <p><span className="font-bold text-3xl">Nós Somos</span> uma companhia do ramo imobiliário, mais especificamente no segmento de construção, venda e/ou aluguer de imóveis residenciais e comerciais</p>
                 </div>
                 <div className="bg-orange-500 rounded-2xl p-4 w-full lg:w-[700px] mt-4">
                     <h3 className="font-bold text-3xl text-white">Visão</h3>
