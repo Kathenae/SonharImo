@@ -27,8 +27,8 @@ class PartnersController extends Controller
             'description' => 'required|min:20|max:500',
             'featured' => 'boolean',
             'logo' => 'image',
-            'logoUrl' => 'max:255',
-            'websiteUrl' => 'max:255',
+            'logoUrl' => 'url|max:255',
+            'websiteUrl' => 'url|max:255',
         ]);
 
         $partner = Partner::create([
@@ -56,8 +56,8 @@ class PartnersController extends Controller
             'description' => 'required|min:20|max:500',
             'featured' => 'boolean',
             'logo' => 'image',
-            'logoUrl' => 'max:255',
-            'websiteUrl' => 'max:100',
+            'logoUrl' => 'url|max:255',
+            'websiteUrl' => 'url|max:255',
         ]);
 
         $partner->update([
