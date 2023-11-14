@@ -62,7 +62,7 @@ export const PartnerInputs = (partner?: Partner): DynamicFormInputs => {
     return [
         { name: 'name', value: partner?.name ?? '', type: 'text' },
         { name: 'description', value: partner?.description ?? '', type: 'text' },
-        { name: 'logoUrl', value: partner?.logoUrl ?? '', type: 'text' },
+        { name: 'logo', value: '', type: 'file', accept: 'image/*' },
         { name: 'websiteUrl', value: partner?.websiteUrl ?? '', type: 'text' },
         { name: 'featured', value: partner?.featured ?? true, type: 'checkbox' },
     ]
