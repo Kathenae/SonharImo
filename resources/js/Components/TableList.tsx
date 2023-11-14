@@ -39,7 +39,7 @@ export default function TableList({ columns, items, detailRoute, checkedItems, o
                         <tr key={index} className="hover:bg-gray-100 focus-within:bg-gray-100">
                             {onCheck &&
                                 <td className="border-t px-6 py-4">
-                                    <Checkbox checked={checkedItems? checkedItems.includes(item) : undefined} onClick={(event) => onCheck(item, event.currentTarget.checked)} />
+                                    <Checkbox checked={checkedItems? checkedItems.includes(item) : undefined} onChange={(event) => onCheck(item, event.currentTarget.checked)} />
                                 </td>
                             }
                             {columns.map((column, index) => (
