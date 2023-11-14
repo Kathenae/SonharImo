@@ -1,9 +1,11 @@
 import { translate as tr } from "@/utils";
 import Checkbox from "./Checkbox";
+import { useEffect, useState } from "react";
 
 interface TableListProps {
     columns: string[],
     items: Record<string, any>[],
+    searchText?: string,
     detailRoute: string,
     checkedItems?: Record<string, any>[]
     onCheck?: (item: Record<string, any>, checked: boolean) => void
@@ -18,7 +20,27 @@ function getObjectAttribute(object: any, attributeName: string) {
     return value
 }
 
-export default function TableList({ columns, items, detailRoute, checkedItems, onCheck }: TableListProps) {
+export default function TableList({ columns, items, searchText, detailRoute, checkedItems, onCheck }: TableListProps) {
+
+    const [filteredItems, setFilteredItems] = useState(items)
+
+    // filter items based on searchText
+    useEffect(() => {
+        if (searchText) {
+            setFilteredItems(items.filter((item) => {
+                for (let column of columns) {
+                    if (tr(getObjectAttribute(item, column)).toString().toLowerCase().includes(searchText.toLowerCase())) {
+                        return true;
+                    }
+                }
+                return false;
+            }))
+        }
+        else{
+            setFilteredItems(items)
+        }
+    }, [searchText, items])
+
     return (
         <div className="bg-white rounded-md shadow overflow-x-auto">
             <table className="w-full whitespace-nowrap">
@@ -35,7 +57,7 @@ export default function TableList({ columns, items, detailRoute, checkedItems, o
                     </tr>
                 </thead>
                 <tbody>
-                    {items.map((item, index) => (
+                    {filteredItems.map((item, index) => (
                         <tr key={index} className="hover:bg-gray-100 focus-within:bg-gray-100">
                             {onCheck &&
                                 <td className="border-t px-6 py-4">
@@ -54,10 +76,10 @@ export default function TableList({ columns, items, detailRoute, checkedItems, o
                             </td>
                         </tr>
                     ))}
-                    {items.length <= 0 &&
+                    {filteredItems.length <= 0 &&
                         <tr className="hover:bg-gray-100 focus-within:bg-gray-100">
                             <td className="px-6 py-4 text-center text-gray-400 text-lg font-bold border-t" colSpan={columns.length}>
-                                <a href="">Sem Dados</a>
+                                <a href="">Nenhum dado encontrado</a>
                             </td>
                         </tr>
                     }

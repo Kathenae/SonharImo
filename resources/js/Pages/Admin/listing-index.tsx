@@ -16,7 +16,8 @@ import { yesNo } from "@/utils";
 
 function ListingIndex({ auth, flash, listings }: PageProps<{ listings: HouseListing[] }>) {
     const [checkedItems, setCheckedItems] = useState<HouseListing[]>([])
-    const [filters, setFilters] = useState({ approved: 'yes', featured: '', published: '' })
+    const [searchText, setSearchText] = useState('')
+    const [filters, setFilters] = useState({ approved: '', featured: '', published: '' })
     const [shouldFeature, setShouldFeature] = useState(true)
     const [shouldApprove, setShouldApprove] = useState(true)
     const [shouldPublish, setShouldPublish] = useState(true)
@@ -134,6 +135,8 @@ function ListingIndex({ auth, flash, listings }: PageProps<{ listings: HouseList
                         name="search"
                         placeholder="Procurar..."
                         spellCheck="false"
+                        value={searchText}
+                        onChange={(e) => setSearchText(e.currentTarget.value)}
                     />
                 </div>
 
@@ -155,6 +158,7 @@ function ListingIndex({ auth, flash, listings }: PageProps<{ listings: HouseList
                         setCheckedItems(current => current.filter(listing => listing != item))
                     }
                 }}
+                searchText={searchText}
                 columns={['user.email', 'owner_name', 'publish_at', 'is_featured', 'is_published', 'is_approved']}
                 detailRoute="admin.listings.edit"
                 items={filterListings()}

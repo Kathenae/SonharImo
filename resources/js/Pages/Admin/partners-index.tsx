@@ -6,11 +6,27 @@ import DangerButton from "@/Components/DangerButton";
 import TextInput from "@/Components/TextInput";
 import Dropdown from "@/Components/Dropdown";
 import ChoiceSelect from "@/Components/ChoiceSelect";
-import { RoleChoices } from "@/choices";
+import { RoleChoices, YesNoChoice } from "@/choices";
 import InputLabel from "@/Components/InputLabel";
 import TableList from "@/Components/TableList";
+import { useState } from "react";
+import { yesNo } from "@/utils";
 
 export default function PartnersIndex({ auth, flash, partners }: PageProps<{ partners: Partner[] }>) {
+    const [searchText, setSearchText] = useState('')
+    const [filters, setFilters] = useState({ featured: '' })
+
+    const filterPartners = () => {
+        let filteredPartners = partners;
+
+        if(filters.featured != '')
+        {
+            filteredPartners = filteredPartners.filter(item => item.featured == yesNo(filters.featured))
+            console.log(filteredPartners)
+        }
+
+        return filteredPartners;
+    }
 
     return (
         <Layout user={auth.user} flashMessages={flash} title="Gerir Utilizadores">
@@ -27,11 +43,20 @@ export default function PartnersIndex({ auth, flash, partners }: PageProps<{ par
                         </Dropdown.Trigger>
                         <Dropdown.Content backdrop keepOpen contentClasses="px-6 py-4 space-y-4 bg-white w-72" align="left">
                             <div className="space-y-2">
-                                <InputLabel>Função</InputLabel>
-                                <ChoiceSelect className="w-full" defaultAny choices={RoleChoices} />
+                                <InputLabel>Destacado</InputLabel>
+                                <ChoiceSelect
+                                    className="w-full"
+                                    defaultAny
+                                    value={filters.featured}
+                                    onChange={(e) => setFilters({...filters, featured: e.currentTarget.value})}
+                                    choices={YesNoChoice}
+                                />
                             </div>
                             <div>
-                                <DangerButton className="w-full flex items-center space-x-2">
+                                <DangerButton
+                                    className="w-full flex items-center space-x-2"
+                                    onClick={() => setFilters({ featured: '' })}
+                                >
                                     <span>Limpar Filtros</span>
                                     <i className="icon-[mdi--autorenew] text-2xl" />
                                 </DangerButton>
@@ -45,6 +70,8 @@ export default function PartnersIndex({ auth, flash, partners }: PageProps<{ par
                         name="search"
                         placeholder="Procurar..."
                         spellCheck="false"
+                        value={searchText}
+                        onChange={(e) => setSearchText(e.currentTarget.value)}
                     />
                 </div>
                 <PrimaryButton
@@ -56,9 +83,10 @@ export default function PartnersIndex({ auth, flash, partners }: PageProps<{ par
             </div>
 
             <TableList
-                columns={['id', 'name', 'logoUrl']}
+                columns={['id', 'name', 'logoUrl', 'featured']}
                 detailRoute="admin.partners.edit"
-                items={partners}
+                searchText={searchText}
+                items={filterPartners()}
             />
         </Layout>
     )

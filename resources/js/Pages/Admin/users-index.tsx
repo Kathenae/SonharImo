@@ -14,6 +14,7 @@ import { useState } from "react";
 
 export default function UsersIndex({ auth, flash, users }: PageProps<{ users: User[] }>) {
     const [filters, setFilters] = useState({ role: '' })
+    const [searchText, setSearchText] = useState('')
 
     const filterUsers = () => {
 
@@ -68,6 +69,8 @@ export default function UsersIndex({ auth, flash, users }: PageProps<{ users: Us
                         name="search"
                         placeholder="Procurar..."
                         spellCheck="false"
+                        value={searchText}
+                        onChange={(e) => setSearchText(e.currentTarget.value)}
                     />
                 </div>
                 <PrimaryButton
@@ -81,6 +84,7 @@ export default function UsersIndex({ auth, flash, users }: PageProps<{ users: Us
             <TableList
                 columns={['id', 'name', 'email', 'role']}
                 detailRoute={'admin.users.edit'}
+                searchText={searchText}
                 items={filterUsers()}
             />
         </Layout>
