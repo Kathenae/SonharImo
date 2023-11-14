@@ -76,7 +76,7 @@ class ListingUpdateRequest extends FormRequest
             'is_published' => isset($this->is_published) ? $this->is_published : $listing->is_published,
             'publish_at' => isset($this->publish_at) ? $this->publish_at : $listing->publish_at,
             'user_id' => $this->user()->id,
-            'include_convenience' => isset($this->includes_convenience)? $this->includes_convenience : $listing->include_convenience
+            'include_convenience' => isset($this->include_convenience)? $this->include_convenience : $listing->include_convenience
         ];
     }
 }

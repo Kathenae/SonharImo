@@ -76,7 +76,7 @@ class ListingCreateRequest extends FormRequest
             'user_id' => $this->user()->id,
             'publish_at' => isset($this->publish_at) ? $this->publish_at : now(),
             'is_published' => isset($this->is_published) ? $this->is_published : true,
-            'include_convenience' => isset($this->includes_convenience)? $this->includes_convenience : false
+            'include_convenience' => isset($this->include_convenience)? $this->include_convenience : false
         ];
     }
 }
