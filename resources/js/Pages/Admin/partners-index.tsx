@@ -83,7 +83,7 @@ export default function PartnersIndex({ auth, flash, partners }: PageProps<{ par
             </div>
 
             <TableList
-                columns={['id', 'name', 'logoUrl', 'featured']}
+                columns={['id', 'name', 'description', 'featured']}
                 detailRoute="admin.partners.edit"
                 searchText={searchText}
                 items={filterPartners()}
