@@ -148,7 +148,6 @@ function ListingIndex({ auth, flash, listings }: PageProps<{ listings: HouseList
             <TableList
                 checkedItems={checkedItems}
                 onCheck={(item, checked) => {
-                    console.log(checkedItems)
                     if(checked){
                         setCheckedItems(current =>  [...current, item as HouseListing])
                     }
