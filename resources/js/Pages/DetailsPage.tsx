@@ -58,11 +58,11 @@ export default function DetailsPage(props: PageProps<{ listing: HouseListing }>)
                             <h3 className="text-orange-500 font-bold text-2xl">Detalhes</h3>
                             <p className="space-x-2 mt-4">
                                 <b>Contacto:</b>
-                                <a className="text-orange-500 font-medium underline" href={`tel:${listing.owner_phone_number}`}>{listing.owner_phone_number}</a>
+                                <a className="text-orange-500 font-medium underline" href={`tel:${listing.owner_phone_number}`} target="_blank">{listing.owner_phone_number}</a>
                             </p>
                             <p className="space-x-2">
                                 <b>Localização:</b>
-                                <a className="" href={`tel:${listing.address}`}>{listing.address}, {listing.city}, {ProvinceChoices[listing.province as keyof typeof ProvinceChoices]}</a>
+                                <a className="text-orange-500 font-medium underline" href={`http://maps.google.com/?q=${listing.address}`} target="_blank">{listing.address}, {listing.city}, {ProvinceChoices[listing.province as keyof typeof ProvinceChoices]}</a>
                             </p>
                             <p className="space-x-2">
                                 <b>Facilidade de pagamento:</b>
