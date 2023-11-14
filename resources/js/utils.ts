@@ -138,3 +138,13 @@ export function translate(text: string | boolean) {
         return text
     }
 }
+
+/**
+ * converts a string to boolean
+ *
+ * @param yesNoString the string to be converted to boolean
+ * @returns boolean representation of yesNoString
+ */
+export function yesNo(yesNoString: string){
+    return yesNoString == 'yes'? true : yesNoString == 'no'? false : undefined
+}

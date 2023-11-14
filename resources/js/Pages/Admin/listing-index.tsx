@@ -6,15 +6,17 @@ import DangerButton from "@/Components/DangerButton";
 import TextInput from "@/Components/TextInput";
 import Dropdown from "@/Components/Dropdown";
 import ChoiceSelect from "@/Components/ChoiceSelect";
-import { RoleChoices } from "@/choices";
+import { RoleChoices, YesNoChoice } from "@/choices";
 import InputLabel from "@/Components/InputLabel";
 import TableList from "@/Components/TableList";
 import { Transition } from "@headlessui/react";
 import { useState } from "react";
 import CheckedButton from "@/Components/CheckedButton";
+import { yesNo } from "@/utils";
 
 function ListingIndex({ auth, flash, listings }: PageProps<{ listings: HouseListing[] }>) {
     const [checkedItems, setCheckedItems] = useState<HouseListing[]>([])
+    const [filters, setFilters] = useState({ approved: 'yes', featured: '', published: '' })
     const [shouldFeature, setShouldFeature] = useState(true)
     const [shouldApprove, setShouldApprove] = useState(true)
     const [shouldPublish, setShouldPublish] = useState(true)
@@ -47,6 +49,27 @@ function ListingIndex({ auth, flash, listings }: PageProps<{ listings: HouseList
         })
     }
 
+    const filterListings = () => {
+        let filteredListings = listings;
+
+        if(filters.approved != '')
+        {
+            filteredListings = filteredListings.filter(item => item.is_approved == yesNo(filters.approved))
+        }
+
+        if(filters.featured != '')
+        {
+            filteredListings = filteredListings.filter(item => item.is_featured == yesNo(filters.featured))
+        }
+
+        if(filters.published != '')
+        {
+            filteredListings = filteredListings.filter(item => item.is_published == yesNo(filters.published))
+        }
+
+        return filteredListings
+    }
+
     return (
         <Layout user={auth.user} flashMessages={flash} title="Gerir Imóveis">
             <h1 className="mb-8 text-3xl font-bold">Imóveis</h1>
@@ -64,11 +87,40 @@ function ListingIndex({ auth, flash, listings }: PageProps<{ listings: HouseList
                         </Dropdown.Trigger>
                         <Dropdown.Content backdrop keepOpen contentClasses="px-6 py-4 space-y-4 bg-white w-72" align="left">
                             <div className="space-y-2">
-                                <InputLabel>Função</InputLabel>
-                                <ChoiceSelect className="w-full" defaultAny choices={RoleChoices} />
+                                <InputLabel>Aprovado</InputLabel>
+                                <ChoiceSelect
+                                    className="w-full"
+                                    defaultAny
+                                    value={filters.approved}
+                                    onChange={(e) => setFilters({...filters, approved: e.currentTarget.value})}
+                                    choices={YesNoChoice}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <InputLabel>Publicado</InputLabel>
+                                <ChoiceSelect
+                                    className="w-full"
+                                    defaultAny
+                                    value={filters.published}
+                                    onChange={(e) => setFilters({...filters, published: e.currentTarget.value})}
+                                    choices={YesNoChoice}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <InputLabel>Destacado</InputLabel>
+                                <ChoiceSelect
+                                    className="w-full"
+                                    defaultAny
+                                    value={filters.featured}
+                                    onChange={(e) => setFilters({...filters, featured: e.currentTarget.value})}
+                                    choices={YesNoChoice}
+                                />
                             </div>
                             <div>
-                                <DangerButton className="w-full flex items-center space-x-2">
+                                <DangerButton
+                                    className="w-full flex items-center space-x-2"
+                                    onClick={() => setFilters({ approved: '', featured: '', published: '' })}
+                                >
                                     <span>Limpar Filtros</span>
                                     <i className="icon-[mdi--autorenew] text-2xl" />
                                 </DangerButton>
@@ -106,7 +158,7 @@ function ListingIndex({ auth, flash, listings }: PageProps<{ listings: HouseList
                 }}
                 columns={['user.email', 'owner_name', 'publish_at', 'is_featured', 'is_published', 'is_approved']}
                 detailRoute="admin.listings.edit"
-                items={listings}
+                items={filterListings()}
             />
 
             <Transition

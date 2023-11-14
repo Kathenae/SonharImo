@@ -1,3 +1,8 @@
+export const YesNoChoice = {
+    'yes' : 'Sim',
+    'no' : 'Não'
+}
+
 export const PropertyTypeChoices = {
     'apartment': 'Apartamento',
     'house': 'Vivenda',
