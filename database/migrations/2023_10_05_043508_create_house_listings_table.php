@@ -32,7 +32,7 @@ return new class extends Migration
             $table->integer('total_bedrooms')->default(0);
             $table->integer('total_showers')->default(0);
             $table->integer('total_parking_spaces')->default(0);
-            $table->text('description')->nullable()->default('');
+            $table->text('description')->nullable();
 
             $table->boolean('is_approved')->default(false);
             $table->boolean('is_featured')->default(false);
