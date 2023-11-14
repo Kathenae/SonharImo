@@ -15,7 +15,17 @@ export default function HouseCard({ listing }: HouseCardProps) {
                 </div>
                 <div className="px-6 mt-6">
                     <div className="overflow-hidden h-[214px]">
-                        <img src={listing?.images[0]?.url ?? "/assets/house-default.jpg"} className="w-full" />
+                        {listing.images.length <= 0 && (
+                            <div className="w-full h-full bg-gray-200 rounded-md flex flex-col items-center justify-center">
+                                <i className="icon-[mdi--image] text-8xl text-gray-100"/>
+                                <span className="text-gray-400 text-2xl">
+                                    Sem imagen
+                                </span>
+                            </div>
+                        )}
+                        {listing.images.length > 1 && (
+                            <img src={listing?.images[0]?.url ?? "/assets/house-default.jpg"} className="w-full" />
+                        )}
                     </div>
                 </div>
 
