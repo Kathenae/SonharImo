@@ -70,8 +70,17 @@ class UserController extends Controller
         return redirect(route('admin.users.index'))->with('flash.success', 'Dados do Utilizador Actualizados');
     }
 
-    public function destroy(Request $request, User $user){
-        $user->delete();
-        return redirect(route('admin.users.index'))->with('flash.success','Utilizador Removido');
+    public function destroy(Request $request)
+    {
+        $request->validate([
+            'users' => 'required|array',
+            'users.*' => 'required|integer',
+        ]);
+
+        User::query()
+            ->whereIn('id', $request->users)
+            ->delete();
+
+        return redirect(route('admin.users.index'))->with('flash.success', 'Utilizadores Removidos');
     }
 }

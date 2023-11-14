@@ -147,7 +147,7 @@ Route::post('/admin/utilizadores/alterar/{user}', [UserController::class, 'updat
     ->middleware(['auth','role:admin'])
     ->name('admin.users.update');
 
-Route::delete('/admin/utilizadores/alterar/{user}', [UserController::class, 'destroy'])
+Route::delete('/admin/utilizadores/remover', [UserController::class, 'destroy'])
     ->middleware(['auth','role:admin'])
     ->name('admin.users.destroy');
 #endregion
