@@ -52,9 +52,13 @@ export async function downloadFiles(urls: string[]) {
  * If the input string exists as a key in the dictionary, it returns the corresponding value.
  * If the input string does not exist in the dictionary, it returns the input string as is.
  */
-export function translate(text: string | boolean) {
-    if(typeof text == 'boolean'){
-        text = text? 'true' : 'false'
+export function translate(value: string | boolean | number) {
+    if(typeof value == 'boolean'){
+        value = value? 'true' : 'false'
+    }
+
+    if(typeof value == 'number'){
+        value = value.toString()
     }
 
     const dictionary = {
@@ -131,11 +135,11 @@ export function translate(text: string | boolean) {
         'submit': 'Enviar'
     }
 
-    if (text.toLocaleLowerCase() in dictionary) {
-        return dictionary[text.toLocaleLowerCase() as keyof typeof dictionary]
+    if (value.toLocaleLowerCase() in dictionary) {
+        return dictionary[value.toLocaleLowerCase() as keyof typeof dictionary]
     }
     else {
-        return text
+        return value
     }
 }
 
