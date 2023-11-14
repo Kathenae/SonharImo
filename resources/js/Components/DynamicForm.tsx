@@ -37,7 +37,7 @@ export interface FormInput {
     name: string,
     value: string | number | boolean  | any | undefined,
     showIf?: {targetInput: string, inValues: string[]},
-    type?: 'text' | 'checkbox' | 'imageselect' | 'number' | 'textarea' | 'file' | 'datetime-local' | 'date',
+    type?: 'text' | 'checkbox' | 'imageselect' | 'number' | 'textarea' | 'file' | 'datetime-local' | 'date' | 'email' | 'password',
     multiple?: boolean,
     accept?: string,
     hideLabel?: boolean,
