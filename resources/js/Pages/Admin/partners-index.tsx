@@ -11,10 +11,13 @@ import InputLabel from "@/Components/InputLabel";
 import TableList from "@/Components/TableList";
 import { useState } from "react";
 import { yesNo } from "@/utils";
+import { Transition } from "@headlessui/react";
 
 export default function PartnersIndex({ auth, flash, partners }: PageProps<{ partners: Partner[] }>) {
     const [searchText, setSearchText] = useState('')
     const [filters, setFilters] = useState({ featured: '' })
+    const [checkedItems, setCheckedItems] = useState<Partner[]>([])
+
 
     const filterPartners = () => {
         let filteredPartners = partners;
@@ -26,6 +29,13 @@ export default function PartnersIndex({ auth, flash, partners }: PageProps<{ par
         }
 
         return filteredPartners;
+    }
+
+    const handleDelete = () => {
+        router.delete(route('admin.partners.destroy'), {
+            data: { partners: checkedItems.map((partner) => partner.id) },
+            only: ['partners']
+        })
     }
 
     return (
@@ -83,11 +93,36 @@ export default function PartnersIndex({ auth, flash, partners }: PageProps<{ par
             </div>
 
             <TableList
-                columns={['id', 'name', 'description', 'featured']}
+                checkedItems={checkedItems}
+                onCheck={(item, checked) => {
+                    if (checked) {
+                        setCheckedItems(current => [...current, item as Partner])
+                    }
+                    else {
+                        setCheckedItems(current => current.filter(listing => listing != item))
+                    }
+                }}
+                columns={['id', 'name', 'featured']}
                 detailRoute="admin.partners.edit"
                 searchText={searchText}
                 items={filterPartners()}
             />
+
+            <Transition
+                show={checkedItems.length > 0}
+                enter="transition ease-out duration-200"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+            >
+                <div className="flex items-center fixed bottom-0 p-4 space-x-4">
+                    <DangerButton onClick={handleDelete}>
+                        Eliminar
+                    </DangerButton>
+                </div>
+            </Transition>
         </Layout>
     )
 }
