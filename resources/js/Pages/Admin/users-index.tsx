@@ -7,11 +7,24 @@ import { useDialog } from "@/Components/Dialogs/DialogHooks";
 import TextInput from "@/Components/TextInput";
 import Dropdown from "@/Components/Dropdown";
 import ChoiceSelect from "@/Components/ChoiceSelect";
-import { ProvinceChoices, RoleChoices } from "@/choices";
+import { RoleChoices } from "@/choices";
 import InputLabel from "@/Components/InputLabel";
 import TableList from "@/Components/TableList";
+import { useState } from "react";
 
 export default function UsersIndex({ auth, flash, users }: PageProps<{ users: User[] }>) {
+    const [filters, setFilters] = useState({ role: '' })
+
+    const filterUsers = () => {
+
+        let filteredUsers = users;
+
+        if (filters.role != '') {
+            filteredUsers = filteredUsers.filter(item => item.role == filters.role)
+        }
+
+        return filteredUsers;
+    }
 
     return (
         <Layout user={auth.user} flashMessages={flash} title="Gerir Utilizadores">
@@ -29,10 +42,19 @@ export default function UsersIndex({ auth, flash, users }: PageProps<{ users: Us
                         <Dropdown.Content backdrop keepOpen contentClasses="px-6 py-4 space-y-4 bg-white w-72" align="left">
                             <div className="space-y-2">
                                 <InputLabel>Função</InputLabel>
-                                <ChoiceSelect className="w-full" defaultAny choices={RoleChoices} />
+                                <ChoiceSelect
+                                    className="w-full"
+                                    defaultAny
+                                    value={filters.role}
+                                    choices={RoleChoices}
+                                    onChange={(e) => setFilters({...filters, role: e.currentTarget.value})}
+                                />
                             </div>
                             <div>
-                                <DangerButton className="w-full flex items-center space-x-2">
+                            <DangerButton
+                                    className="w-full flex items-center space-x-2"
+                                    onClick={() => setFilters({ role: '' })}
+                                >
                                     <span>Limpar Filtros</span>
                                     <i className="icon-[mdi--autorenew] text-2xl" />
                                 </DangerButton>
@@ -59,7 +81,7 @@ export default function UsersIndex({ auth, flash, users }: PageProps<{ users: Us
             <TableList
                 columns={['id', 'name', 'email', 'role']}
                 detailRoute={'admin.users.edit'}
-                items={users.map(u => ({ ...u, role: RoleChoices[u.role] }))}
+                items={filterUsers()}
             />
         </Layout>
     )

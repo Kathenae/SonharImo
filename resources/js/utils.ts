@@ -62,11 +62,17 @@ export function translate(value: string | boolean | number) {
     }
 
     const dictionary = {
+        'id': 'ID',
+
         // User Credentials/Authentication
+        'name': 'Nome',
         'email': 'Email',
-        'role': 'Função',
         'password': 'Palavra-passe',
         'password_confirmation': 'Confirme a Palavra-passe',
+        'role': 'Função',
+        'admin': 'Administrador',
+        'moderator': 'Moderador',
+        'guest': 'Utilizador',
 
         // Website Partner Information
         'websiteurl': 'Link do Website',
@@ -132,7 +138,7 @@ export function translate(value: string | boolean | number) {
 
         'true': 'Sim',
         'false': 'Não',
-        'submit': 'Enviar'
+        'submit': 'Enviar',
     }
 
     if (value.toLocaleLowerCase() in dictionary) {
