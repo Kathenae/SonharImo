@@ -19,6 +19,7 @@ class HouseListing extends Model
         'address',
         'property_type',
         'deal_type',
+        'negotiation_type',
         'price',
         'is_approved',
         'is_published',
