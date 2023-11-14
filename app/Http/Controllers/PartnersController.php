@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Partner;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class PartnersController extends Controller
@@ -27,8 +29,8 @@ class PartnersController extends Controller
             'description' => 'required|min:20|max:500',
             'featured' => 'boolean',
             'logo' => 'image',
-            'logoUrl' => 'url|max:255',
-            'websiteUrl' => 'url|max:255',
+            'logoUrl' => 'nullable|url|max:255',
+            'websiteUrl' => 'nullable|url|max:255',
         ]);
 
         $partner = Partner::create([
@@ -38,6 +40,16 @@ class PartnersController extends Controller
             'websiteUrl' => $request->websiteUrl,
             'featured' => $request->featured,
         ]);
+
+        if($request->hasFile('logo')){
+            $logo = $request->logo;
+            if($logo instanceof UploadedFile && $logo->isValid()){
+                $logo_url = Storage::url($logo->storePublicly('public'));
+                $partner->update([
+                    'logoUrl' => $logo_url,
+                ]);
+            }
+        }
 
         return redirect(route('admin.partners.index'))->with('flash.success', 'Novo parceiro addicionado');
     }
@@ -56,8 +68,8 @@ class PartnersController extends Controller
             'description' => 'required|min:20|max:500',
             'featured' => 'boolean',
             'logo' => 'image',
-            'logoUrl' => 'url|max:255',
-            'websiteUrl' => 'url|max:255',
+            'logoUrl' => 'nullable|url|max:255',
+            'websiteUrl' => 'nullable|url|max:255',
         ]);
 
         $partner->update([
@@ -67,6 +79,16 @@ class PartnersController extends Controller
             'logoUrl' => $request->logoUrl,
             'featured' => $request->featured,
         ]);
+
+        if($request->hasFile('logo')){
+            $logo = $request->logo;
+            if($logo instanceof UploadedFile && $logo->isValid()){
+                $logo_url = Storage::url($logo->storePublicly('public'));
+                $partner->update([
+                    'logoUrl' => $logo_url,
+                ]);
+            }
+        }
 
         return redirect(route('admin.partners.index'))->with('flash.success', 'Dados do parceiro actualizados');
     }
