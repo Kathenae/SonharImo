@@ -93,9 +93,17 @@ class PartnersController extends Controller
         return redirect(route('admin.partners.index'))->with('flash.success', 'Dados do parceiro actualizados');
     }
 
-    public function destroy(Request $request, Partner $partner)
+    public function destroy(Request $request)
     {
-        $partner->delete();
-        return redirect(route('admin.partners.index'))->with('flash.success', 'Parceiro eliminado');
+        $request->validate([
+            'partners' => 'required|array',
+            'partners.*' => 'required|integer'
+        ]);
+
+        Partner::query()
+            ->whereIn('id', $request->partners)
+            ->delete();
+
+        return redirect(route('admin.partners.index'))->with('flash.success', 'Parceiros removidos');
     }
 }

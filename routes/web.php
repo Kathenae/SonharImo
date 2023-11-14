@@ -174,7 +174,7 @@ Route::post('/admin/parceiros/alterar/{partner}', [PartnersController::class, 'u
     ->middleware(['auth','role:admin'])
     ->name('admin.partners.update');
 
-Route::delete('/admin/parceiros/alterar/{partner}', [PartnersController::class, 'destroy'])
+Route::delete('/admin/parceiros/remover', [PartnersController::class, 'destroy'])
     ->middleware(['auth','role:admin'])
     ->name('admin.partners.destroy');
 #endregion
