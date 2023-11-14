@@ -36,6 +36,7 @@ class HouseListing extends Model
         'owner_address',
         'owner_email_address',
         'user_id',
+        'include_convenience',
     ];
 
     protected $casts = [
