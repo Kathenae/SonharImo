@@ -37,7 +37,7 @@ export default function ManagePage(props: PageProps<{ listings: HouseListing[] }
 
                                 <div className="px-6 mt-6">
                                     <div className="overflow-hidden h-[214px]">
-                                        <img src={listing.images[0].url ?? "/assets/house-default.jpg"} className="w-full" />
+                                        <img src={listing.images[0]?.url ?? "/assets/house-default.jpg"} className="w-full" />
                                     </div>
                                 </div>
 
