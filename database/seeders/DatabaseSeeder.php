@@ -13,7 +13,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        \App\Models\User::factory(15)->create();
+        \App\Models\HouseListing::factory(50)->create();
+        \App\Models\Partner::factory(10)->create();
 
         \App\Models\User::factory()->create([
             'name' => 'Test User',
@@ -21,5 +23,6 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
             'password' => Hash::make('Pass321'),
         ]);
+
     }
 }
