@@ -38,6 +38,8 @@ export interface FormInput {
     value: string | number | boolean  | any | undefined,
     showIf?: {targetInput: string, inValues: string[]},
     type?: 'text' | 'checkbox' | 'imageselect' | 'number' | 'textarea' | 'file' | 'datetime-local' | 'date',
+    multiple?: boolean,
+    accept?: string,
     hideLabel?: boolean,
     choices?: Record<string, string>,
 }
@@ -113,12 +115,15 @@ function DynamicInput({ input, setData, onChange, value, errors }: DynamicInputP
                         type={input.type ?? 'text'}
                         autoComplete="new-password"
                         name={input.name}
-                        className="mt-1 block"
+                        multiple={input.multiple ?? false}
+                        accept={input.accept ?? '*'}
+                        className="mt-1 pr-4 w-full border border-gray-300 focus:border-orange-500 focus:ring-orange-500 rounded-md shadow-sm cursor-pointer file:px-4 file:py-2 file:rounded-r-none file:bg-gray-800 file:border file:border-transparent file:rounded-md file:font-semibold file:text-white file:uppercase file:tracking-widest file:hover:bg-gray-700 file:hover:cursor-pointer file:focus:bg-gray-700 file:active:bg-gray-900 file:focus:outline-none focus:ring-2 file:focus:ring-orange-500 file:focus:ring-offset-2 file:transition file:ease-in-out file:duration-150"
                         onChange={(e) => {
-                            if (e.target.files && e.target.files[0] != null) {
-                                setData(input.name, e.target.files[0])
+                            if (e.target.files && e.target.files != null) {
+                                const files = e.target.files
+                                setData(input.name, input.multiple? files : files[0])
                                 if(onChange){
-                                    onChange(input, e.target.files[0])
+                                    onChange(input, input.multiple? files: files[0])
                                 }
                             }
                         }}
@@ -158,7 +163,6 @@ interface DynamicFormGroupProps {
 }
 
 function DynamicFormGroup({ group, collapsable, data, setData, onChange, errors }: DynamicFormGroupProps) {
-    const [open, setOpen] = useState(true);
     return (
         <>
             {collapsable ?
