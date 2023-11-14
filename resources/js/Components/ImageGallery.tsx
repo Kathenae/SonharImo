@@ -67,6 +67,14 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
                     id="images_scroll_container"
                     className="w-full h-full aspect-video flex space-x-4 overflow-hidden rounded-lg"
                 >
+                    {images.length <= 0 && (
+                        <div className="w-full h-full bg-gray-200 rounded-md flex flex-col items-center justify-center">
+                            <i className="icon-[mdi--image] text-8xl text-gray-100" />
+                            <span className="text-gray-400 text-2xl">
+                                Sem imagens
+                            </span>
+                        </div>
+                    )}
                     {images.map((image, index) => (
                         <img
                             id={`image_${index}`}
@@ -76,20 +84,22 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
                         />
                     ))}
                 </div>
-                <div className="absolute top-0 left-0 flex items-center justify-between w-full h-full pointer-events-none px-4">
-                    <button
-                        className="text-white hover:text-gray-100 pointer-events-auto"
-                        onClick={() => handleNextImage(-1)}
-                    >
-                        <span className="icon-[mdi--chevron-left-circle] scale-[2]" />
-                    </button>
-                    <button
-                        className="text-white hover:text-gray-100 pointer-events-auto"
-                        onClick={() => handleNextImage(1)}
-                    >
-                        <span className="icon-[mdi--chevron-right-circle] scale-[2]" />
-                    </button>
-                </div>
+                {images.length > 1 && (
+                    <div className="absolute top-0 left-0 flex items-center justify-between w-full h-full pointer-events-none px-4">
+                        <button
+                            className="text-white hover:text-gray-100 pointer-events-auto"
+                            onClick={() => handleNextImage(-1)}
+                        >
+                            <span className="icon-[mdi--chevron-left-circle] scale-[2]" />
+                        </button>
+                        <button
+                            className="text-white hover:text-gray-100 pointer-events-auto"
+                            onClick={() => handleNextImage(1)}
+                        >
+                            <span className="icon-[mdi--chevron-right-circle] scale-[2]" />
+                        </button>
+                    </div>
+                )}
             </div>
             <div
                 id="images_sm_scroll_container"
