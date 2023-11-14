@@ -52,7 +52,12 @@ export async function downloadFiles(urls: string[]) {
  * If the input string exists as a key in the dictionary, it returns the corresponding value.
  * If the input string does not exist in the dictionary, it returns the input string as is.
  */
-export function translate(value: string | boolean | number) {
+export function translate(value: string | boolean | number | null) {
+
+    if(value == null){
+        return ''
+    }
+
     if(typeof value == 'boolean'){
         value = value? 'true' : 'false'
     }
