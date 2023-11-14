@@ -26,7 +26,7 @@ class PartnersController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|min:20|max:500',
+            'description' => 'required|min:10|max:500',
             'featured' => 'boolean',
             'logo' => 'image',
             'logoUrl' => 'nullable|url|max:255',
@@ -65,7 +65,7 @@ class PartnersController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|min:20|max:500',
+            'description' => 'required|min:10|max:500',
             'featured' => 'boolean',
             'logo' => 'image',
             'logoUrl' => 'nullable|url|max:255',
