@@ -125,7 +125,7 @@ export function translate(value: string | boolean | number | null) {
         'sale': 'Venda',
         'deal_type': 'Tipo de negocio',
         'price': 'Preço',
-        'include_convenience': 'Facilidade',
+        'include_convenience': 'Facilidade de pagamento',
         'negotiation_type': 'Responsabilidade de Negociação',
         'internal' : 'Própria(Sonhar)',
         'external': 'Corretor Externo',
