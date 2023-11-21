@@ -57,6 +57,10 @@ export default function DetailsPage(props: PageProps<{ listing: HouseListing }>)
                         <div className="mt-4">
                             <h3 className="text-orange-500 font-bold text-2xl">Detalhes</h3>
                             <p className="space-x-2 mt-4">
+                                <b>Tipo:</b>
+                                <span>{translate(listing.property_type)}</span>
+                            </p>
+                            <p className="space-x-2">
                                 <b>Contacto:</b>
                                 <a className="text-orange-500 font-medium underline" href={`tel:${listing.owner_phone_number}`} target="_blank">{listing.owner_phone_number}</a>
                             </p>

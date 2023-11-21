@@ -21,8 +21,7 @@ class HouseListingController extends Controller
         // filter for only is_published, is_approved and publish_at is now
         $query
             ->where('is_published', true)
-            ->where('is_approved', true)
-            ->where('publish_at', '<=', now());
+            ->where('is_approved', true);
 
         // Filter by province
         if ($request->has('province')) {
